@@ -1,3 +1,8 @@
+using DataAccess;
+using DataAccess.Repository.IRepository;
+using DataAccess.Repository;
+using Microsoft.EntityFrameworkCore;
+
 namespace BookMatch
 {
     public class Program
@@ -8,6 +13,18 @@ namespace BookMatch
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(
+                    options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection"))
+            );
+
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddScoped(typeof(ILeagueRepository), typeof(LeagueRepository));
+            builder.Services.AddScoped(typeof(ITeamRepository), typeof(TeamRepository));
+            builder.Services.AddScoped(typeof(IMatchRepository), typeof(MatchRepository));
+            builder.Services.AddScoped(typeof(ITicketRepository), typeof(TicketRepository));
+            builder.Services.AddScoped(typeof(ITicketCategoryRepository), typeof(TicketCategoryRepository));
+            builder.Services.AddScoped(typeof(IStadiumRepository), typeof(StadiumRepository));
 
             var app = builder.Build();
 
