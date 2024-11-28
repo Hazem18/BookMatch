@@ -83,7 +83,7 @@ namespace BookMatch.Areas.Identity.Pages.Account.Manage
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 PhoneNumber = phoneNumber,
-                ProfilePicture= user.ProfilePicture
+               // ProfilePicture= user.ProfilePicture
             };
         }
 
@@ -143,7 +143,7 @@ namespace BookMatch.Areas.Identity.Pages.Account.Manage
                 using (var dataStream = new MemoryStream())
                 {
                     await files.CopyToAsync(dataStream);
-                    user.ProfilePicture = dataStream.ToArray();
+                   // user.ProfilePicture = dataStream.ToArray();
                 }
                 await _userManager.UpdateAsync(user);
             }
