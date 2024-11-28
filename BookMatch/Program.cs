@@ -2,6 +2,9 @@ using DataAccess;
 using DataAccess.Repository.IRepository;
 using DataAccess.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BookMatch
 {
@@ -13,10 +16,18 @@ namespace BookMatch
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
 
             builder.Services.AddDbContext<ApplicationDbContext>(
                     options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection"))
             );
+
+            // builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+            // builder.Services.AddIdentity<ApplicationUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddDefaultUI().AddDefaultTokenProviders();
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+               .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultUI().AddDefaultTokenProviders();
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped(typeof(ILeagueRepository), typeof(LeagueRepository));
@@ -40,6 +51,7 @@ namespace BookMatch
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.MapRazorPages();
 
             app.UseAuthorization();
 
