@@ -262,7 +262,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Leagues");
+                    b.ToTable("Leagues", (string)null);
                 });
 
             modelBuilder.Entity("Models.Match", b =>
@@ -306,7 +306,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("Matches");
+                    b.ToTable("Matches", (string)null);
                 });
 
             modelBuilder.Entity("Models.Stadium", b =>
@@ -331,7 +331,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stadiums");
+                    b.ToTable("Stadiums", (string)null);
                 });
 
             modelBuilder.Entity("Models.Team", b =>
@@ -360,7 +360,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StadiumId");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("Models.Ticket", b =>
@@ -390,7 +390,7 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasFilter("[SeatNumber] IS NOT NULL");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("Models.TicketCategory", b =>
@@ -415,7 +415,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TicketCategories");
+                    b.ToTable("TicketCategories", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -25,9 +25,12 @@ namespace BookMatch
             // builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
             // builder.Services.AddIdentity<ApplicationUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddDefaultUI().AddDefaultTokenProviders();
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-               .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultUI().AddDefaultTokenProviders();
+            //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //   .AddEntityFrameworkStores<ApplicationDbContext>()
+            //.AddDefaultUI().AddDefaultTokenProviders();
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped(typeof(ILeagueRepository), typeof(LeagueRepository));
@@ -53,6 +56,7 @@ namespace BookMatch
             app.UseRouting();
             app.MapRazorPages();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

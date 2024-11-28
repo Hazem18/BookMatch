@@ -13,6 +13,7 @@ namespace Models
         public string LastName { get; set; }
         public int NationalId { get; set; }
         public string Address { get; set; }
-        public string ProfilePicture {  get; set; }
+        public byte[] ProfilePicture {  get; set; }
+
     }
 }
