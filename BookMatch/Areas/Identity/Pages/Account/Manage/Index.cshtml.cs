@@ -68,10 +68,10 @@ namespace BookMatch.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
 
             [Display(Name = "Profile Picture")]
-            public byte[] ProfilePicture { get; set; }
+            public string ProfilePicture { get; set; }
         }
 
-        private async Task LoadAsync(ApplicationUser user)
+        private async Task LoadAsync(ApplicationUser user )
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
@@ -83,7 +83,7 @@ namespace BookMatch.Areas.Identity.Pages.Account.Manage
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 PhoneNumber = phoneNumber,
-               // ProfilePicture= user.ProfilePicture
+                ProfilePicture= user.ProfilePicture
             };
         }
 
@@ -138,13 +138,34 @@ namespace BookMatch.Areas.Identity.Pages.Account.Manage
             }
             if(Request.Form.Files.Count > 0)
             {
-                var files = Request.Form.Files.FirstOrDefault();
+                var file = Request.Form.Files.FirstOrDefault();
 
-                using (var dataStream = new MemoryStream())
+                string random = Guid.NewGuid().ToString();
+                string extension = Path.GetExtension(file.FileName);
+
+
+                string fileName = random + extension;
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\ProfilePictures", fileName);
+
+                string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\ProfilePictures");
+
+
+                if (!Directory.Exists(directoryPath))
                 {
-                    await files.CopyToAsync(dataStream);
-                   // user.ProfilePicture = dataStream.ToArray();
+                    Directory.CreateDirectory(directoryPath);
                 }
+
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    file.CopyTo(stream);
+                }
+                user.ProfilePicture = fileName;
+
+                //using (var dataStream = new MemoryStream())
+                //{
+                //    await files.CopyToAsync(dataStream);
+                //   // user.ProfilePicture = dataStream.ToArray();
+                //}
                 await _userManager.UpdateAsync(user);
             }
 
