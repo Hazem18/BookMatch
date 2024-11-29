@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System.Net.Sockets;
@@ -39,6 +40,14 @@ namespace DataAccess
             modelBuilder.Entity<TicketCategory>()
                .Property(t => t.Price)
                .HasColumnType("decimal(10,2)");
+
+            var Admin = new IdentityRole("Admin");
+            Admin.NormalizedName = "Admin";
+
+            var User = new IdentityRole("User");
+            User.NormalizedName = "User";
+
+            modelBuilder.Entity<IdentityRole>().HasData(Admin,User);
         }
     }
 }
