@@ -101,8 +101,9 @@ namespace BookMatch.Areas.Identity.Pages.Account
             /// </summary>
 
             [Required]
-            [Range(1, int.MaxValue, ErrorMessage = "National ID must be a positive number.")]
-            public int NationalId { get; set; }
+            [Range(1, long.MaxValue, ErrorMessage = "National ID must be a positive number.")]
+            [RegularExpression(@"^\d{14}$", ErrorMessage = "The number must be exactly 14 digits long.")]
+            public long NationalId { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.

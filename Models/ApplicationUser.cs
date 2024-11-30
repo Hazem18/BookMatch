@@ -11,7 +11,7 @@ namespace Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int NationalId { get; set; }
+        public long NationalId { get; set; }
         public string Address { get; set; }
         public string? ProfilePicture {  get; set; }
 

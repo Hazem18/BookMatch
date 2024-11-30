@@ -8,12 +8,14 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4">@ViewData["Title"]</h2>
     <form id="Profile-form" method="post" enctype="multipart/form-data" class="row g-4">
+        <partial name="_StatusMessage" for="StatusMessage" />
+        <div asp-validation-summary="All" class="text-danger" role="alert"></div>
         
         <!-- القسم الأيسر: تحديث البيانات الشخصية -->
         <div class="col-lg-6">
             <div class="card shadow border-0 p-4">
                 <h4 class="text-center mb-3">Personal Information</h4>
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+         @*        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div> *@
 
                 <div class="form-floating mb-3">
                     <input asp-for="Input.FirstName" class="form-control" placeholder="First Name" />

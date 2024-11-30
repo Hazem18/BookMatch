@@ -140,11 +140,19 @@ namespace BookMatch.Areas.Identity.Pages.Account.Manage
             {
                 var file = Request.Form.Files.FirstOrDefault();
 
-                string random = Guid.NewGuid().ToString();
                 string extension = Path.GetExtension(file.FileName);
 
+                if(extension != ".png" && extension!=".jpg" )
+                {
 
+                ModelState.AddModelError(string.Empty , "profile picture extension must be png or jpg ");
+                    return Page();
+                }
+
+                string random = Guid.NewGuid().ToString();
                 string fileName = random + extension;
+
+
                 string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\ProfilePictures", fileName);
 
                 string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\ProfilePictures");
