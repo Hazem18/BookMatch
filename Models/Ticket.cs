@@ -14,5 +14,7 @@ namespace Models
         public int TicketCategoryId { get; set; }
         public TicketCategory TicketCategory { get; set; } = null!;
         public string? SeatNumber { get; set; }  // Unique for each match
+
+        public ICollection<UserTicket> UserTickets { get; set; } = new List<UserTicket>();
     }
 }

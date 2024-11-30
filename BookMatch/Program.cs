@@ -40,6 +40,9 @@ namespace BookMatch
             builder.Services.AddScoped(typeof(ITicketCategoryRepository), typeof(TicketCategoryRepository));
             builder.Services.AddScoped(typeof(IStadiumRepository), typeof(StadiumRepository));
 
+            builder.Services.AddScoped(typeof(IUserTicketRepository), typeof(UserTicketRepository));
+            builder.Services.AddScoped(typeof(ITeamLeagueRepository), typeof(TeamLeagueRepository));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

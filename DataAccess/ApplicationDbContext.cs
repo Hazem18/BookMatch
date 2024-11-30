@@ -18,6 +18,9 @@ namespace DataAccess
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Stadium> Stadiums { get; set; }
         public DbSet<TicketCategory> TicketCategories { get; set; }
+        public DbSet<TeamLeague> TeamLeagues { get; set; }
+        public DbSet<UserTicket> userTickets { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -48,6 +51,37 @@ namespace DataAccess
             User.NormalizedName = "User";
 
             modelBuilder.Entity<IdentityRole>().HasData(Admin,User);
+
+            ///
+            modelBuilder.Entity<TeamLeague>()
+           .HasKey(tl => new { tl.TeamId, tl.LeagueId }); // Composite primary key
+
+            modelBuilder.Entity<TeamLeague>()
+                .HasOne(tl => tl.Team)
+                .WithMany(t => t.TeamLeagues) 
+                .HasForeignKey(tl => tl.TeamId);
+
+            modelBuilder.Entity<TeamLeague>()
+                .HasOne(tl => tl.League)
+                .WithMany(l => l.TeamLeagues) 
+                .HasForeignKey(tl => tl.LeagueId);
+            ///
+
+
+            ///
+            modelBuilder.Entity<UserTicket>()
+              .HasKey(ut => new { ut.UserId, ut.TicketId }); // Composite primary key
+
+            modelBuilder.Entity<UserTicket>()
+                .HasOne(ut => ut.User)
+                .WithMany(u => u.UserTickets)
+                .HasForeignKey(ut => ut.UserId);
+
+            modelBuilder.Entity<UserTicket>()
+                .HasOne(ut => ut.Ticket)
+                .WithMany(t => t.UserTickets)
+                .HasForeignKey(ut => ut.TicketId);
+            ///
         }
     }
 }
