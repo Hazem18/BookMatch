@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Models;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Utility;
 
 namespace BookMatch
 {
@@ -30,6 +32,8 @@ namespace BookMatch
             //.AddDefaultUI().AddDefaultTokenProviders();
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+           // builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
