@@ -28,7 +28,5 @@ namespace Models.ViewModels
         public int LeagueId { get; set; }
         [ValidateNever]
         public MatchStatus Status { get; set; }
-        [ValidateNever]
-        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }
