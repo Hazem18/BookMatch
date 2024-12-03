@@ -1,55 +1,38 @@
 ﻿@using Models.ViewModels;
 @model LeagueVM
 
-<div class="container mt-5">
-    <div class="row align-items-center mb-3">
-        <div class="col-12 text-center">
-            <h2 class="text-success">Create New League</h2>
-        </div>
-    </div>
+ <h2 class="text-center text-success mb-4">Add New League</h2>
+<div class="form-container">
 
-    <div class="row mb-4">
-        <div class="col-12 d-flex justify-content-end">
-            <a href="/Admin/League/Index" class="btn btn-secondary">Back to Leagues</a>
+    <form method="post" asp-action="Create" enctype="multipart/form-data" class="league-form">
+        <div class="form-group">
+            <label asp-for="Name" class="form-label">League Name</label>
+            <input asp-for="Name" class="form-control" placeholder="Enter league name" />
+            <span asp-validation-for="Name" class="validation-error"></span>
         </div>
-    </div>
 
-    <form method="post" asp-action="Create" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label asp-for="Name" class="form-label">League Name</label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label asp-for="Logo" class="form-label">League Logo</label>
-                    <input asp-for="Logo" type="file" class="form-control" id="logoInput" accept="image/*" />
-                    <span asp-validation-for="Logo" class="text-danger"></span>
-                </div>
-                <div class="mb-3 text-center">
-                    <img id="logoPreview" src="#" alt="Selected Logo" style="display: none; max-width: 200px; max-height: 200px;" />
-                </div>
+        <div class="form-group">
+            <label asp-for="Logo" class="form-label">League Logo</label>
+            <input asp-for="Logo" type="file" class="form-control" id="logoInput" accept="image/*" />
+            <span asp-validation-for="Logo" class="validation-error"></span>
+            <div class="text-center mt-3">
+                <img id="logoPreview" src="#" alt="Selected Logo" style="display: none; max-width: 200px; max-height: 200px;" />
             </div>
         </div>
 
-        <div class="mb-3">
+        <div class="form-group">
             <label asp-for="Description" class="form-label">Description</label>
-            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
+            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter league description"></textarea>
+            <span asp-validation-for="Description" class="validation-error"></span>
         </div>
 
-        <div class="row mb-4">
-            <div class="col-12 d-flex justify-content-end">
-                <button class="btn btn-success" type="submit">
-                    <i class="bi bi-plus-circle"></i> Create League
-                </button>
-            </div>
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-football">Add League</button>
+            <a href="/Admin/League/Index" class="btn btn-cancel">Cancel</a>
         </div>
     </form>
 </div>
+
 <script>
     document.getElementById('logoInput').addEventListener('change', function (event) {
         const file = event.target.files[0];
@@ -69,3 +52,91 @@
     });
 </script>
 
+<style>
+    
+    .form-container {
+        max-width: 650px;
+        margin: 30px auto;
+        padding: 25px;
+        background: #f3fff3;
+        border: 2px solid #28a745;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(40, 167, 69, 0.2);
+        font-family: 'Arial', sans-serif;
+    }
+
+    h2 {
+        font-weight: bold;
+        color: #28a745; 
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+        font-size: 2.3rem; 
+        margin-bottom: 20px; 
+    }
+
+    .league-form .form-label {
+        font-weight: bold;
+        color: #28a745;
+        font-size: 1.1rem;
+    }
+
+    .league-form .form-control {
+        border: 1px solid #28a745;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 1rem;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        background-color: #ffffff;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px; 
+    }
+
+        .league-form .form-control:focus {
+            border-color: #218838;
+            box-shadow: 0 0 10px rgba(33, 136, 56, 0.5);
+        }
+
+    .validation-error {
+        font-size: 0.9rem;
+        color: #dc3545;
+        margin-top: 5px;
+    }
+
+    .btn-football {
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: white;
+        font-weight: bold;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 10px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-top: 15px; 
+    }
+
+        .btn-football:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.5);
+            transform: translateY(-2px);
+        }
+
+    .btn-cancel {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        font-weight: bold;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 10px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-left: 20px; 
+        margin-top: 15px; 
+    }
+
+        .btn-cancel:hover {
+            background: linear-gradient(135deg, #c82333, #b21f2d);
+            box-shadow: 0 6px 15px rgba(220, 53, 69, 0.5);
+            transform: translateY(-2px);
+        }
+</style>

@@ -1,18 +1,18 @@
-﻿@model List<League>
+﻿@model List<TicketCategory>
 
 <div class="container">
-    <h1 class="text-center text-success">Leagues</h1>
+    <h1 class="text-center text-success">Ticket Category</h1>
 
     <div class="row mb-3">
         <div class="col-12 text-end">
             <a asp-action="Create" class="btn btn-football add-btn">
-                <i class="bi bi-plus-circle"></i> Add New League
+                <i class="bi bi-plus-circle"></i> Add New Ticket
             </a>
         </div>
     </div>
 
-    <form action="/Admin/League/Search" method="get" class="d-flex justify-content-end align-items-center mb-4">
-        <input class="form-control search-input me-2" type="search" name="searchTerm" placeholder="Search for League..." required />
+    <form action="#" method="get" class="d-flex justify-content-end align-items-center mb-4">
+        <input class="form-control search-input me-2" type="search" name="searchTerm" placeholder="Search for Ticket..." required />
         <button class="btn btn-football btn-search bi bi-search" type="submit">
             Search
         </button>
@@ -22,9 +22,10 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th> Name</th>
-                <th>Logo</th>
-                <th>Description</th>
+                <th>Name</th>
+                <th>Available Tickets</th>
+                <th>Sector Image</th>
+                <th>Price</th>
                 <th style="width: 25%;">Actions</th>
             </tr>
         </thead>
@@ -32,21 +33,22 @@
             @if (Model != null && Model.Any())
             {
                 int index = 1;
-                foreach (var item in Model)
+                foreach (var ticket in Model)
                 {
                     <tr>
                         <td>@index</td>
-                        <td>@item.Name</td>
+                        <td>@ticket.Name</td>
+                        <td>@ticket.AvailableTickets</td>
                         <td>
-                            <img src="~/LogoUrl/@item.LogoUrl" alt="@item.Name Logo" style="max-width: 100px; max-height: 50px;" />
+                            <img src="@ticket.SectorImage" alt="@ticket.Name Sector" style="max-width: 100px; max-height: 50px;" />
                         </td>
-                        <td>@item.Description</td>
+                        <td>@ticket.Price.ToString("C")</td>
                         <td>
                             <div class="d-flex gap-1 justify-content-center">
-                                <a asp-action="Edit" asp-route-leagueId="@item.Id" class="btn btn-football btn-sm">
+                                <a asp-action="Edit" asp-route-ticketId="@ticket.Id" class="btn btn-football btn-sm">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </a>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-league-id="@item.Id">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-ticket-id="@ticket.Id">
                                     <i class="bi bi-trash"></i> Delete
                                 </button>
                             </div>
@@ -58,7 +60,7 @@
             else
             {
                 <tr>
-                    <td colspan="5" class="text-center text-muted">No leagues available.</td>
+                    <td colspan="6" class="text-center text-muted">No tickets available.</td>
                 </tr>
             }
         </tbody>
@@ -72,12 +74,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this league?
+                    Are you sure you want to delete this ticket?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <form id="deleteForm" asp-action="Delete" method="post">
-                        <input type="hidden" name="leagueId" id="leagueIdInput" value="" />
+                        <input type="hidden" name="ticketId" id="ticketIdInput" value="" />
                         <button type="submit" class="btn btn-primary">Delete</button>
                     </form>
                 </div>
@@ -90,13 +92,11 @@
     const deleteModal = document.getElementById('deleteModal');
     deleteModal.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget;
-        const leagueId = button.getAttribute('data-league-id');
-        const input = document.getElementById('leagueIdInput');
-        input.value = leagueId;
+        const ticketId = button.getAttribute('data-ticket-id');
+        const input = document.getElementById('ticketIdInput');
+        input.value = ticketId;
     });
 </script>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 <style>
     .table-football {
