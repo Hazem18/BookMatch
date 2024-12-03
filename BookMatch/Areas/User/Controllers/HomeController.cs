@@ -18,6 +18,11 @@ namespace BookMatch.Areas.Customer.Controllers
         {
             return View();
         }
+        public IActionResult Notfound()
+        {
+
+            return View();
+        }
 
         public IActionResult Privacy()
         {
