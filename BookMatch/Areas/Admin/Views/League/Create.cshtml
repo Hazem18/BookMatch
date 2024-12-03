@@ -1,0 +1,71 @@
+﻿@using Models.ViewModels;
+@model LeagueVM
+
+<div class="container mt-5">
+    <div class="row align-items-center mb-3">
+        <div class="col-12 text-center">
+            <h2 class="text-success">Create New League</h2>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-end">
+            <a href="/Admin/League/Index" class="btn btn-secondary">Back to Leagues</a>
+        </div>
+    </div>
+
+    <form method="post" asp-action="Create" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">League Name</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label asp-for="Logo" class="form-label">League Logo</label>
+                    <input asp-for="Logo" type="file" class="form-control" id="logoInput" accept="image/*" />
+                    <span asp-validation-for="Logo" class="text-danger"></span>
+                </div>
+                <div class="mb-3 text-center">
+                    <img id="logoPreview" src="#" alt="Selected Logo" style="display: none; max-width: 200px; max-height: 200px;" />
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12 d-flex justify-content-end">
+                <button class="btn btn-success" type="submit">
+                    <i class="bi bi-plus-circle"></i> Create League
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    document.getElementById('logoInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('logoPreview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "#";
+            preview.style.display = "none";
+        }
+    });
+</script>
+
