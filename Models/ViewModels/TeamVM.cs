@@ -20,7 +20,6 @@ namespace Models.ViewModels
         [Display(Name= "Stadium")]
         public int StadiumId { get; set; }
         [Required]
-        [Display(Name = "League")]
-        public int LeagueId { get; set; }
+        public List<int> SelectedLeagueIds { get; set; } = new List<int>();
     }
 }
