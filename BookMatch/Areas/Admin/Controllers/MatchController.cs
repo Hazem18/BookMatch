@@ -65,7 +65,7 @@ namespace BookMatch.Areas.Admin.Controllers
 
                 match.DateTime= matchVM.DateTime;
 
-                if(matchVM.TeamAId == match.TeamBId)
+                if(matchVM.TeamAId == matchVM.TeamBId)
                 {
                     ModelState.AddModelError(string.Empty, "you can't chose the same team as team home and team away");
 
@@ -135,5 +135,140 @@ namespace BookMatch.Areas.Admin.Controllers
             return View(matchVM);
             }
         }
+        public IActionResult Edit(int id)
+        {
+            var match = matchRepository.GetOne(expression: e => e.Id == id);
+            if (match != null)
+            {
+                var matchVM = new MatchVM()
+                {
+                    Id = match.Id,
+                    DateTime = match.DateTime,
+                    LeagueId = match.LeagueId,
+                    StadiumId = match.StadiumId,
+                    TeamAId = match.TeamAId,
+                    TeamBId = match.TeamBId
+                };
+
+
+                var teams = teamRepository.Get(includeProps: [e => e.Stadium, e => e.TeamLeagues]);
+                ViewBag.Teams = teams;
+
+                var Leagues = leagueRepository.Get();
+                ViewBag.Leagues = Leagues;
+                return View(matchVM);
+            }
+            else
+             return RedirectToAction("NotFound","home");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(MatchVM matchVM)
+        {
+            ModelState.Remove("Tickets");
+            if (ModelState.IsValid)
+            {
+                var match = matchRepository.GetOne(expression:e=>e.Id==matchVM.Id);
+
+                if (matchVM.DateTime <= DateTime.Now)
+                {
+                    ModelState.AddModelError("DateTime", "this date is expired");
+
+                    var teams = teamRepository.Get(includeProps: [e => e.Stadium, e => e.TeamLeagues]);
+                    ViewBag.Teams = teams;
+
+                    var Leagues = leagueRepository.Get();
+                    ViewBag.Leagues = Leagues;
+                    return View(matchVM);
+                }
+
+                match.DateTime = matchVM.DateTime;
+
+                if (matchVM.TeamAId == matchVM.TeamBId)
+                {
+                    ModelState.AddModelError(string.Empty, "you can't chose the same team as team home and team away");
+
+                    var teams = teamRepository.Get(includeProps: [e => e.Stadium, e => e.TeamLeagues]);
+                    ViewBag.Teams = teams;
+
+                    var Leagues = leagueRepository.Get();
+                    ViewBag.Leagues = Leagues;
+                    return View(matchVM);
+                }
+               
+                match.TeamAId = matchVM.TeamAId;
+                match.TeamBId = matchVM.TeamBId;
+                match.StadiumId = teamRepository.Get(expression: e => e.Id == matchVM.TeamAId, includeProps: [e => e.Stadium])
+                    .FirstOrDefault().Stadium.Id;
+
+                var teamALeaue = teamLeagueRepository.Get(expression: e => e.TeamId == match.TeamAId && e.LeagueId == matchVM.LeagueId).FirstOrDefault();
+                var teamBLeaue = teamLeagueRepository.Get(expression: e => e.TeamId == match.TeamBId && e.LeagueId == matchVM.LeagueId).FirstOrDefault();
+
+                if (teamALeaue == null)
+                {
+                    ModelState.AddModelError(string.Empty, "team home does not play in this league");
+
+                    var teams = teamRepository.Get(includeProps: [e => e.Stadium, e => e.TeamLeagues]);
+                    ViewBag.Teams = teams;
+
+                    var Leagues = leagueRepository.Get();
+                    ViewBag.Leagues = Leagues;
+                    return View(matchVM);
+                }
+                if (teamBLeaue == null)
+                {
+                    ModelState.AddModelError(string.Empty, "team away does not play in this league");
+
+                    var teams = teamRepository.Get(includeProps: [e => e.Stadium, e => e.TeamLeagues]);
+                    ViewBag.Teams = teams;
+
+                    var Leagues = leagueRepository.Get();
+                    ViewBag.Leagues = Leagues;
+                    return View(matchVM);
+                }
+
+
+
+
+                match.LeagueId = matchVM.LeagueId;
+
+
+
+                match.Status = MatchStatus.Available;
+
+                matchRepository.Edit(match);
+                matchRepository.Commit();
+
+                return RedirectToAction("Index");
+
+
+            }
+            else
+            {
+
+                var teams = teamRepository.Get(includeProps: [e => e.Stadium, e => e.TeamLeagues]);
+                ViewBag.Teams = teams;
+
+                var Leagues = leagueRepository.Get();
+                ViewBag.Leagues = Leagues;
+                return View(matchVM);
+            }
+        }
+       [HttpPost]
+      //  [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            var match = matchRepository.GetOne(expression:e=>e.Id == id);
+            if(match !=null)
+            {
+                matchRepository.Delete(match);
+                matchRepository.Commit();
+
+                return RedirectToAction("index");
+            }
+             else
+                return RedirectToAction("NotFound", "home");
+        }
+
     }
 }
