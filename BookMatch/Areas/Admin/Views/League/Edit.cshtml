@@ -1,0 +1,130 @@
+﻿@using Models.ViewModels;
+@model LeagueVMEdit
+
+<h1 class="text-center text-success mb-4">Edit League</h1>
+<div class="form-container">
+    <form method="post" asp-action="Edit" enctype="multipart/form-data" class="league-form">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="Name" class="form-label">League Name</label>
+            <input asp-for="Name" class="form-control" placeholder="Enter league name" />
+            <span asp-validation-for="Name" class="validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LogoUrl" class="form-label">Logo</label>
+            <input asp-for="LogoUrl" type="file" class="form-control" />
+            <span asp-validation-for="LogoUrl" class="validation-error"></span>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.LogoUrl))
+        {
+            <div class="mt-3 text-center">
+                <img src="@Url.Content("~/LogoUrl/" + Model.LogoUrl)" alt="League Logo" style="max-width: 150px; max-height: 100px;" class="img-thumbnail" />
+            </div>
+        }
+
+        <div class="form-group">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter league description"></textarea>
+            <span asp-validation-for="Description" class="validation-error"></span>
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-football">Save Changes</button>
+            <a href="/Admin/League/Index" class="btn btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<style>
+    .form-container {
+        max-width: 650px;
+        margin: 30px auto;
+        padding: 25px;
+        background: #f3fff3;
+        border: 2px solid #28a745;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(40, 167, 69, 0.2);
+        font-family: 'Arial', sans-serif;
+    }
+
+    h1 {
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .league-form .form-label {
+        font-weight: bold;
+        color: #28a745;
+        font-size: 1.1rem;
+    }
+
+    .league-form .form-control {
+        border: 1px solid #28a745;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 1rem;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        background-color: #ffffff;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px; /* إضافة مسافة بين الحقول */
+    }
+
+        .league-form .form-control:focus {
+            border-color: #218838;
+            box-shadow: 0 0 10px rgba(33, 136, 56, 0.5);
+        }
+
+    .validation-error {
+        font-size: 0.9rem;
+        color: #dc3545;
+        margin-top: 5px;
+    }
+
+    .btn-football {
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: white;
+        font-weight: bold;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 10px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-top: 15px; /* مسافة بين الأزرار والحقول */
+    }
+
+        .btn-football:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.5);
+            transform: translateY(-2px);
+        }
+
+    .btn-cancel {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        font-weight: bold;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 10px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-left: 20px; /* توسيع المسافة بين الأزرار */
+        margin-top: 15px; /* مسافة بين الأزرار والحقول */
+    }
+
+        .btn-cancel:hover {
+            background: linear-gradient(135deg, #c82333, #b21f2d);
+            box-shadow: 0 6px 15px rgba(220, 53, 69, 0.5);
+            transform: translateY(-2px);
+        }
+</style>
