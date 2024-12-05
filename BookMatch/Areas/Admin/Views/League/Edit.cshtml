@@ -1,5 +1,6 @@
-﻿@using Models;
-@model League
+﻿@using Models.ViewModels
+@model LeagueVMEdit
+
 
 <h1 class="text-center text-success mb-4">Edit League</h1>
 <div class="form-container">
@@ -8,7 +9,7 @@
 
         <div class="form-group">
             <label asp-for="Name" class="form-label">League Name</label>
-            <input asp-for="Name" class="form-control" placeholder="Enter league name" />
+            <input asp-for="Name" class="form-control" placeholder="Enter League Name" />
             <span asp-validation-for="Name" class="validation-error"></span>
         </div>
 

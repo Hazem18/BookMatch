@@ -69,8 +69,15 @@ namespace BookMatch.Areas.Admin.Controllers
             var league = leagueRepository.GetOne(expression: e => e.Id == leagueId);
             if (league != null)
             {
+                var leagueVM = new LeagueVMEdit()
+                { 
+                    Id = league.Id,
+                    Name = league.Name,
+                    Description = league.Description,
+                    LogoUrl = league.LogoUrl,
+                };
 
-                return View(model: league);
+                return View(model: leagueVM);
             }
 
             return RedirectToAction("NotFound", "Home");
@@ -78,12 +85,14 @@ namespace BookMatch.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(League league, IFormFile LogoUrl)
+        public IActionResult Edit(LeagueVMEdit leagueVM, IFormFile LogoUrl)
         {
-            var oldLeague = leagueRepository.GetOne(expression: e => e.Id == league.Id, tracked:false);
-
+            var oldLeague = leagueRepository.GetOne(expression: e => e.Id == leagueVM.Id, tracked:false);
+            ModelState.Remove("LogoUrl");
             if (ModelState.IsValid)
             {
+                oldLeague.Name = leagueVM.Name;
+                oldLeague.Description = leagueVM.Description;
                 
                 if (LogoUrl != null && LogoUrl.Length > 0)
                 {
@@ -102,21 +111,23 @@ namespace BookMatch.Areas.Admin.Controllers
                         System.IO.File.Delete(oldFilePath);
                     }
 
-                    league.LogoUrl = fileName;
+                    oldLeague.LogoUrl = fileName;
                 }
+                
                 else
                 {
-                    league.LogoUrl = oldLeague.LogoUrl;
+                    leagueVM.LogoUrl = oldLeague.LogoUrl;
+
                 }
 
-                leagueRepository.Edit(league);
+                leagueRepository.Edit(oldLeague);
                 leagueRepository.Commit();
 
                 return RedirectToAction(nameof(Index));
             }
 
-            league.LogoUrl = oldLeague.LogoUrl;
-            return View(league);
+            leagueVM.LogoUrl = oldLeague.LogoUrl;
+            return View(leagueVM);
         }
 
         private string? UploadImg(IFormFile logo)

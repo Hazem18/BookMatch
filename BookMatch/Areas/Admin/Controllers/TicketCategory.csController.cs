@@ -73,8 +73,17 @@ namespace BookMatch.Areas.Admin.Controllers
             var ticketCategory = ticketCategoryRepository.GetOne(expression: e => e.Id == ticketId);
             if (ticketCategory != null)
             {
+                var ticketCategoryVM = new TicketCategoryVMEdit()
+                {
+                    Id = ticketCategory.Id,
+                    Name = ticketCategory.Name,
+                    AvailableTickets = ticketCategory.AvailableTickets,
+                    SectorImage = ticketCategory.SectorImage,
+                    Price = ticketCategory.Price,
 
-                 return View(model: ticketCategory);
+                };
+
+                 return View(model: ticketCategoryVM);
 
             }
             return RedirectToAction("NotFound", "Home");
@@ -82,12 +91,16 @@ namespace BookMatch.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(TicketCategory ticket, IFormFile SectorImage)
+        public IActionResult Edit(TicketCategoryVMEdit ticketVM, IFormFile SectorImage)
         {
-            var oldticketCategory = ticketCategoryRepository.GetOne(expression: e => e.Id == ticket.Id, tracked: false);
+            var oldticketCategory = ticketCategoryRepository.GetOne(expression: e => e.Id == ticketVM.Id, tracked: false);
+            ModelState.Remove("SectorImage");
 
             if (ModelState.IsValid)
             {
+                oldticketCategory.Name = ticketVM.Name;
+                oldticketCategory.AvailableTickets = ticketVM.AvailableTickets;
+                oldticketCategory.Price = ticketVM.Price;
                 if (SectorImage != null && SectorImage.Length > 0)
                 {
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(SectorImage.FileName);
@@ -105,22 +118,22 @@ namespace BookMatch.Areas.Admin.Controllers
                         System.IO.File.Delete(oldFilePath);
                     }
 
-                    ticket.SectorImage = fileName;
+                    oldticketCategory.SectorImage = fileName;
                 }
                 else
                 {
-                    ticket.SectorImage = oldticketCategory.SectorImage;
+                    ticketVM.SectorImage = oldticketCategory.SectorImage;
                 }
 
-                ticketCategoryRepository.Edit(ticket);
+                ticketCategoryRepository.Edit(oldticketCategory);
                 ticketCategoryRepository.Commit();
 
                 return RedirectToAction(nameof(Index));
 
 
             }
-            ticket.SectorImage = oldticketCategory.SectorImage;
-            return View(ticket);
+            ticketVM.SectorImage = oldticketCategory.SectorImage;
+            return View(ticketVM);
         }
 
         private string? UploadImg(IFormFile Imag)
