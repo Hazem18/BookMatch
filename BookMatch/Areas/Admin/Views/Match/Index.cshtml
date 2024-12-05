@@ -14,6 +14,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.DateTime)
             </th>
             <th>
@@ -31,36 +34,72 @@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Stadium.Id)
+                @Html.DisplayFor(modelItem => item.Stadium.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TeamA.Id)
+                @Html.DisplayFor(modelItem => item.TeamA.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TeamB.Id)
+                @Html.DisplayFor(modelItem => item.TeamB.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.League.Id)
+                @Html.DisplayFor(modelItem => item.League.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#deleteModal" data-matchid="@item.Id">
+                        <i class="bi bi-trash3"></i> Delete
+                    </button>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this match ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" action="/admin/match/delete/">
+                    <input type="hidden" name="id" id="matchIdInput" value="" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var id = button.getAttribute('data-matchid');
+        var input = document.getElementById('matchIdInput');
+        input.value = id;
+    });
+</script>
