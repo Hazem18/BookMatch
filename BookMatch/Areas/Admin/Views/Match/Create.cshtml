@@ -1,144 +1,156 @@
 ﻿@model Models.ViewModels.MatchVM
 
 @{
-    ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Create Match";
 }
 
-<h1>Create</h1>
+<h1 class="text-center text-success">Create New Match</h1>
 
-<h4>Match</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="DateTime" class="control-label"></label>
-                <input asp-for="DateTime" class="form-control" />
-                <span asp-validation-for="DateTime" class="text-danger"></span>
-            </div>
+<div class="form-container">
+    <form asp-action="Create" method="post" class="match-form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="DateTime" class="form-label">Match Date & Time</label>
+            <input asp-for="DateTime" class="form-control" placeholder="Select match date and time" />
+            <span asp-validation-for="DateTime" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="TeamAId" class="control-label"></label>
-
-            <!-- Update the teamA dropdown to include data-stadium for each team -->
-            <select asp-for="TeamAId" id="select-teamA" placeholder="search for team...">
+        <div class="form-group">
+            <label asp-for="TeamAId" class="form-label">Team Home</label>
+            <select asp-for="TeamAId" id="select-teamA" class="form-control" placeholder="Search for a team...">
                 <option value="">Select a team...</option>
                 @foreach (var item in ViewBag.Teams)
                 {
                     <option value="@item.Id" data-stadium="@item.Stadium?.Name">@item.Name</option>
                 }
             </select>
-                <span asp-validation-for="TeamBId" class="text-danger"></span>
-            </div>
+            <span asp-validation-for="TeamAId" class="text-danger"></span>
+        </div>
 
+        <div id="stadium-info" class="mt-3">
+            <h5>Stadium</h5>
+            <p id="stadium-name" class="text-muted">No stadium selected yet.</p>
+        </div>
 
-            <!-- Stadium info section -->
-            <div id="stadium-info" class="mt-3">
-                <h5>Stadium Name</h5>
-                <p id="stadium-name">No stadium selected yet.</p>
-            </div>
+        <div class="form-group">
+            <label asp-for="TeamBId" class="form-label">Team Away</label>
+            <select asp-for="TeamBId" id="select-teamB" class="form-control" placeholder="Search for a team...">
+                <option value="">Select a team...</option>
+                @foreach (var item in ViewBag.Teams)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+            <span asp-validation-for="TeamBId" class="text-danger"></span>
+        </div>
 
+        <div class="form-group mb-2 ">
+            <label asp-for="LeagueId" class="form-label">League</label>
+            <select asp-for="LeagueId" id="select-league" class="form-control" placeholder="Search for a league...">
+                <option value="">Select a league...</option>
+                @foreach (var item in ViewBag.Leagues)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+            <span asp-validation-for="LeagueId" class="text-danger"></span>
+        </div>
 
-
-            <div class="form-group">
-                <label asp-for="TeamBId" class="control-label"></label>
-
-                <select asp-for="TeamBId" id="select-teamB" placeholder="search for team...">
-
-                    <option value="">Select a team...</option>
-                    @foreach (var item in ViewBag.Teams)
-                    {
-
-                        <option value="@item.Id">@item.Name</option>
-                    }
-
-
-                </select>
-                <span asp-validation-for="TeamBId" class="text-danger"></span>
-
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="LeagueId" class="control-label"></label>
-                <select asp-for="LeagueId" id="select-league" placeholder="search for League...">
-
-                    <option value="">Select a League...</option>
-                    @foreach (var item in ViewBag.Leagues)
-                    {
-
-                        <option value="@item.Id">@item.Name</option>
-                    }
-
-
-                </select>
-                <span asp-validation-for="LeagueId" class="text-danger"></span>
-
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-
-
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-football">Create Match</button>
+            <a asp-action="Index" class="btn btn-danger">Cancel</a>
+        </div>
+    </form>
 </div>
-
-
-<script>
-    document.getElementById('select-teamA').addEventListener('change', function () {
-        const selectedOption = this.options[this.selectedIndex];
-        const stadiumName = selectedOption.getAttribute('data-stadium');
-
-        // Update the stadium info section
-        document.getElementById('stadium-name').innerText = stadiumName || 'No stadium selected yet.';
-    });
-
-    // Ensure stadium name is set on page load if TeamAId is already selected
-    document.addEventListener('DOMContentLoaded', function () {
-        const selectedOption = document.getElementById('select-teamA').options[document.getElementById('select-teamA').selectedIndex];
-        const stadiumName = selectedOption.getAttribute('data-stadium');
-        document.getElementById('stadium-name').innerText = stadiumName || 'No stadium selected yet.';
-    });
-</script>
-
-<script>
-    new TomSelect("#select-teamA", {
-        create: false,
-        sortField: {
-            field: "text",
-            direction: "asc"
-        }
-    });
-</script>
-<script>
-    new TomSelect("#select-teamB", {
-        create: false,
-        sortField: {
-            field: "text",
-            direction: "asc"
-        }
-    });
-</script>
-<script>
-    new TomSelect("#select-league", {
-        create: false,
-        sortField: {
-            field: "text",
-            direction: "asc"
-        }
-    });
-</script>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-
-
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<script>
+    document.getElementById('select-teamA').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const stadiumName = selectedOption.getAttribute('data-stadium');
+        document.getElementById('stadium-name').innerText = stadiumName || 'No stadium selected yet.';
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectedOption = document.getElementById('select-teamA').options[document.getElementById('select-teamA').selectedIndex];
+        const stadiumName = selectedOption.getAttribute('data-stadium');
+        document.getElementById('stadium-name').innerText = stadiumName || 'No stadium selected yet.';
+    });
+
+    new TomSelect("#select-teamA", { create: false, sortField: { field: "text", direction: "asc" } });
+    new TomSelect("#select-teamB", { create: false, sortField: { field: "text", direction: "asc" } });
+    new TomSelect("#select-league", { create: false, sortField: { field: "text", direction: "asc" } });
+</script>
+
+<style>
+    /* Form Container */
+    .form-container {
+        max-width: 650px;
+        margin: 30px auto;
+        padding: 25px;
+        background: #f3fff3;
+        border: 2px solid #28a745;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(40, 167, 69, 0.2);
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* Page Title */
+    h1 {
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Form Labels */
+    .match-form .form-label {
+        font-weight: bold;
+        color: #28a745;
+        font-size: 1.1rem;
+    }
+
+    /* Form Controls */
+    .match-form .form-control {
+        border: 1px solid #28a745;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 1rem;
+        background-color: #ffffff;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .match-form .form-control:focus {
+            border-color: #218838;
+            box-shadow: 0 0 10px rgba(33, 136, 56, 0.5);
+        }
+
+    /* Stadium Info */
+    #stadium-info h5 {
+        color: #218838;
+        font-weight: bold;
+    }
+
+    /* Submit Button */
+    .btn-football {
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: white;
+        font-weight: bold;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 10px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .btn-football:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.5);
+            transform: translateY(-2px);
+        }
+</style>
