@@ -25,7 +25,7 @@ namespace BookMatch.Areas.Admin.Controllers
         public IActionResult Create()
         {
             LeagueVM leaguevm = new LeagueVM();
-            return View(new LeagueVM());
+            return View(leaguevm);
         }
         [HttpPost]
         public IActionResult Create(LeagueVM leagueVm)
@@ -36,7 +36,7 @@ namespace BookMatch.Areas.Admin.Controllers
                 {
                     Name = leagueVm.Name,
                     Description = leagueVm.Description,
-                    //LogoUrl = leagueVm.LogoUrl,
+                    LogoUrl = leagueVm.LogoUrl,
                 };
                 if (leagueVm.Logo != null &&leagueVm.Logo.Length > 0)
                 {
@@ -51,64 +51,46 @@ namespace BookMatch.Areas.Admin.Controllers
                     league.LogoUrl = fileName;
                 }
                
-
-               
                 leagueRepository.Create(league);
                 leagueRepository.Commit();
 
                 return RedirectToAction(nameof(Index));
             }
-
-
             return View(model: leagueVm);
         }
         [HttpGet]
+
         public IActionResult Edit(int leagueId)
         {
             var league = leagueRepository.GetOne(expression: e => e.Id == leagueId);
             if (league != null)
             {
-                var leagueVM = new LeagueVMEdit
-                {
-                    Id = league.Id,
-                    Name = league.Name,
-                    Description = league.Description,
-                   LogoUrl = league.LogoUrl, 
-                };
 
-                return View(model: leagueVM);
+                return View(model: league);
             }
 
             return RedirectToAction("NotFound", "Home");
         }
 
         [HttpPost]
-        public IActionResult Edit(LeagueVMEdit leagueVM, IFormFile logo)
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(League league, IFormFile LogoUrl)
         {
-            var oldLeague = leagueRepository.GetOne(expression: e => e.Id == leagueVM.Id);
+            var oldLeague = leagueRepository.GetOne(expression: e => e.Id == league.Id, tracked:false);
 
-           
-            ModelState.Remove("LogoUrl");
             if (ModelState.IsValid)
             {
-                var league = new League
+                
+                if (LogoUrl != null && LogoUrl.Length > 0)
                 {
-                    Id = leagueVM.Id,
-                    Name = leagueVM.Name,
-                    Description = leagueVM.Description,
-                   // LogoUrl = oldLeague.LogoUrl 
-                };
-
-                if (logo != null && logo.Length > 0)
-                {
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(logo.FileName);
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(LogoUrl.FileName);
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\LogoUrl", fileName);
 
                     var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\LogoUrl", oldLeague.LogoUrl);
 
                     using (var stream = System.IO.File.Create(filePath))
                     {
-                        logo.CopyTo(stream);
+                        LogoUrl.CopyTo(stream);
                     }
 
                     if (System.IO.File.Exists(oldFilePath))
@@ -129,10 +111,25 @@ namespace BookMatch.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            leagueVM.LogoUrl = oldLeague.LogoUrl;
-            return View(leagueVM);
+            league.LogoUrl = oldLeague.LogoUrl;
+            return View(league);
         }
 
+        private string? UploadImg(IFormFile logo)
+        {
+            if (logo.Length > 0)
+            {
+                var fileName = logo.FileName;
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\LogoUrl", fileName);
+
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    logo.CopyTo(stream);
+                }
+                return logo.FileName;
+            }
+            return null;
+        }
         public IActionResult Delete(int leagueId)
         {
             var league = leagueRepository.GetOne(expression: e=>e.Id== leagueId);
@@ -152,21 +149,6 @@ namespace BookMatch.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private string? UploadImg(IFormFile logo)
-        {
-            if (logo.Length > 0)
-            {
-                var fileName = logo.FileName;
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\LogoUrl", fileName);
-
-                using (var stream = System.IO.File.Create(filePath))
-                {
-                    logo.CopyTo(stream);
-                }
-                return logo.FileName;
-            }
-            return null;
-        }
 
         public IActionResult Search(string searchTerm)
         {

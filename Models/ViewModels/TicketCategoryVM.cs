@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,8 +18,10 @@ namespace Models.ViewModels
         [Required]
         [Range(1,1000000)]
         public int AvailableTickets { get; set; }
-        [ValidateNever]
         public string? SectorImage { get; set; }
+        // [ValidateNever]
+        [Required(ErrorMessage = "The SectorImage field is Required")]
+        public IFormFile? Image { get; set; }
         [Required]
         [Range(1,10000)]
         public decimal Price { get; set; }
