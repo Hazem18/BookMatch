@@ -15,8 +15,8 @@ namespace Models.ViewModels
         [Required]
         [MinLength(2, ErrorMessage = "League name must be greater than 2 letters")]
         public string? Name { get; set; }
-        //[Required]
-        [ValidateNever]
+        [Required]
+        //[ValidateNever]
         public string? LogoUrl { get; set; }
         [Required]
         [MinLength(10, ErrorMessage = "League Description must be greater than 10 letters")]

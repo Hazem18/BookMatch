@@ -1,0 +1,149 @@
+﻿@using Models.ViewModels
+@model TicketCategoryVM
+
+<h2 class="text-center text-success mb-4">Add New Ticket</h2>
+
+<div class="form-container">
+
+    <form method="post" asp-action="Create" enctype="multipart/form-data" class="ticket-form">
+
+        <div class="form-group">
+            <label asp-for="Name" class="form-label">Ticket Name</label>
+            <input asp-for="Name" class="form-control" placeholder="Enter ticket name" />
+            <span asp-validation-for="Name" class="validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Price" class="form-label">Ticket Price</label>
+            <input asp-for="Price" type="number" class="form-control" placeholder="Enter ticket price" />
+            <span asp-validation-for="Price" class="validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="AvailableTickets" class="form-label">Available Tickets</label>
+            <input asp-for="AvailableTickets" type="number" class="form-control" placeholder="Enter number of tickets available" />
+            <span asp-validation-for="AvailableTickets" class="validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Image" class="form-label">Sector Image</label>
+            <input asp-for="Image" type="file" class="form-control" id="sectorImageInput" accept="image/*" />
+            <span asp-validation-for="Image" class="validation-error"></span>
+            <div class="text-center mt-3">
+                <img id="sectorImagePreview" src="#" alt="Selected Sector Image" style="display: none; max-width: 200px; max-height: 200px;" />
+            </div>
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-football">Add Ticket</button>
+            <a href="/Admin/TicketCategory/Index" class="btn btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('sectorImageInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('sectorImagePreview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "#";
+            preview.style.display = "none";
+        }
+    });
+</script>
+
+<style>
+    .form-container {
+        max-width: 650px;
+        margin: 30px auto;
+        padding: 25px;
+        background: #f3fff3;
+        border: 2px solid #28a745;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(40, 167, 69, 0.2);
+        font-family: 'Arial', sans-serif;
+    }
+
+    h2 {
+        font-weight: bold;
+        color: #28a745;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        font-size: 2.3rem;
+        margin-bottom: 20px;
+    }
+
+    .ticket-form .form-label {
+        font-weight: bold;
+        color: #28a745;
+        font-size: 1.1rem;
+    }
+
+    .ticket-form .form-control {
+        border: 1px solid #28a745;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 1rem;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        background-color: #ffffff;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+        .ticket-form .form-control:focus {
+            border-color: #218838;
+            box-shadow: 0 0 10px rgba(33, 136, 56, 0.5);
+        }
+
+    .validation-error {
+        font-size: 0.9rem;
+        color: #dc3545;
+        margin-top: 5px;
+    }
+
+    .btn-football {
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: white;
+        font-weight: bold;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 10px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-top: 15px;
+    }
+
+        .btn-football:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.5);
+            transform: translateY(-2px);
+        }
+
+    .btn-cancel {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        font-weight: bold;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 10px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-left: 20px;
+        margin-top: 15px;
+    }
+
+        .btn-cancel:hover {
+            background: linear-gradient(135deg, #c82333, #b21f2d);
+            box-shadow: 0 6px 15px rgba(220, 53, 69, 0.5);
+            transform: translateY(-2px);
+        }
+</style>

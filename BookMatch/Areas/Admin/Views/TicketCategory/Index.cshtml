@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <form action="#" method="get" class="d-flex justify-content-end align-items-center mb-4">
+    <form action="/Admin/TicketCategory/Search" method="get" class="d-flex justify-content-end align-items-center mb-4">
         <input class="form-control search-input me-2" type="search" name="searchTerm" placeholder="Search for Ticket..." required />
         <button class="btn btn-football btn-search bi bi-search" type="submit">
             Search
@@ -40,7 +40,7 @@
                         <td>@ticket.Name</td>
                         <td>@ticket.AvailableTickets</td>
                         <td>
-                            <img src="@ticket.SectorImage" alt="@ticket.Name Sector" style="max-width: 100px; max-height: 50px;" />
+                            <img src="@Url.Content("~/LogoUrl/Ticket/" + ticket.SectorImage)" alt="Sector Image" style="max-width: 100px; max-height: 50px;" />
                         </td>
                         <td>@ticket.Price.ToString("C")</td>
                         <td>
@@ -181,3 +181,5 @@
             box-shadow: 0 6px 20px rgba(0, 100, 0, 0.5);
         }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
