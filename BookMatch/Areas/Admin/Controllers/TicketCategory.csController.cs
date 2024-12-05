@@ -1,13 +1,17 @@
 ﻿using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.ViewModels;
+using Utility;
 
 namespace BookMatch.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.AdminRole)]
+
     public class TicketCategoryController : Controller
     {
         private readonly ITicketCategoryRepository ticketCategoryRepository;

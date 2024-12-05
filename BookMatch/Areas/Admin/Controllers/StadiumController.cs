@@ -1,12 +1,16 @@
 ﻿using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.ViewModels;
+using Utility;
 
 namespace BookMatch.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.AdminRole)]
+
     public class StadiumController : Controller
     {
         private readonly IStadiumRepository stadiumRepository;

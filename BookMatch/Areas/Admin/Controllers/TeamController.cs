@@ -1,13 +1,17 @@
 ﻿using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Models;
 using Models.ViewModels;
 using System.Linq.Expressions;
+using Utility;
 
 namespace BookMatch.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.AdminRole)]
+
     public class TeamController : Controller
     {
         private readonly ITeamRepository teamRepository;
