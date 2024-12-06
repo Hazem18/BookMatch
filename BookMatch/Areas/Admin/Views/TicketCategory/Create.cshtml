@@ -40,6 +40,12 @@
         </div>
     </form>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
 
 <script>
     document.getElementById('sectorImageInput').addEventListener('change', function (event) {

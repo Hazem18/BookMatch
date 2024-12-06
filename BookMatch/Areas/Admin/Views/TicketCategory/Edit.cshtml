@@ -1,5 +1,6 @@
-﻿@using Models;
-@model TicketCategory
+﻿@using Models.ViewModels;
+@model TicketCategoryVMEdit
+
 
 <h1 class="text-center text-success mb-4">Edit Ticket Category</h1>
 <div class="form-container">
@@ -8,7 +9,7 @@
 
         <div class="form-group">
             <label asp-for="Name" class="form-label">Category Name</label>
-            <input asp-for="Name" class="form-control" placeholder="Enter category name" />
+            <input asp-for="Name" class="form-control" placeholder="Enter Category Name" />
             <span asp-validation-for="Name" class="validation-error"></span>
         </div>
 
@@ -27,7 +28,7 @@
 
         <div class="form-group">
             <label asp-for="AvailableTickets" class="form-label">Available Tickets</label>
-            <input asp-for="AvailableTickets" class="form-control" type="number" placeholder="Enter available tickets" />
+            <input asp-for="AvailableTickets" class="form-control" type="number" placeholder="Enter Available Tickets" />
             <span asp-validation-for="AvailableTickets" class="validation-error"></span>
         </div>
 
@@ -43,6 +44,11 @@
         </div>
     </form>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
 
 <style>
     .form-container {

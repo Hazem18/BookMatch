@@ -7,7 +7,7 @@
     <form method="post" asp-action="Create" enctype="multipart/form-data" class="league-form">
         <div class="form-group">
             <label asp-for="Name" class="form-label">League Name</label>
-            <input asp-for="Name" class="form-control" placeholder="Enter league name" />
+            <input asp-for="Name" class="form-control" placeholder="Enter League Name" />
             <span asp-validation-for="Name" class="validation-error"></span>
         </div>
 
@@ -22,7 +22,7 @@
 
         <div class="form-group">
             <label asp-for="Description" class="form-label">Description</label>
-            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter league description"></textarea>
+            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter League Description"></textarea>
             <span asp-validation-for="Description" class="validation-error"></span>
         </div>
 
@@ -32,6 +32,12 @@
         </div>
     </form>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
 
 <script>
     document.getElementById('logoInput').addEventListener('change', function (event) {
