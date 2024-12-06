@@ -25,7 +25,7 @@
     <tbody>
         @if (Model != null && Model.Any())
         {
-            int index = 1;
+            int index = (ViewBag.Pages.page*5)-4;
             foreach (var match in Model)
             {
                 <tr>
@@ -52,6 +52,57 @@
         }
     </tbody>
 </table>
+
+<div style="display: flex; justify-content: center;">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination" style="display: flex; justify-content: center; align-items: center;">
+            <!-- Previous Button -->
+            <li class="page-item @(ViewBag.Pages.page == 1 ? "disabled" : "")">
+                <a class="page-link"
+                   asp-route-Page="@(ViewBag.Pages.page > 1 ? ViewBag.Pages.page - 1 : 1)"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <!-- Page Numbers -->
+            @if (ViewBag.Pages.totalPages > 0)
+            {
+                int currentPage = ViewBag.Pages.page;
+                int totalPages = (int)ViewBag.Pages.totalPages;
+
+                // Determine the start and end of the range
+                int startPage = Math.Max(1, currentPage - 1);
+                int endPage = Math.Min(totalPages, startPage + 2);
+
+                // Adjust startPage if at the end of the range
+                if (endPage - startPage < 2)
+                {
+                    startPage = Math.Max(1, endPage - 2);
+                }
+
+                for (int i = startPage; i <= endPage; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" asp-route-Page="@i">@i</a>
+                    </li>
+                }
+            }
+
+            <!-- Next Button -->
+            <li class="page-item @(ViewBag.Pages.page == ViewBag.Pages.totalPages ? "disabled" : "")">
+                <a class="page-link"
+                   asp-route-Page="@(ViewBag.Pages.page < ViewBag.Pages.totalPages ? ViewBag.Pages.page + 1 : ViewBag.Pages.totalPages)"
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">

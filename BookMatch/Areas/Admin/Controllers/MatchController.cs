@@ -28,9 +28,19 @@ namespace BookMatch.Areas.Admin.Controllers
             this.ticketCategoryRepository = ticketCategoryRepository;
             this.teamLeagueRepository = teamLeagueRepository;
         }
-        public IActionResult Index()
+        public IActionResult Index( int page = 1)
         {
             var matches = matchRepository.Get(includeProps: [e => e.League, e => e.Stadium, e => e.Tickets ,e=>e.TeamA , e=>e.TeamB]);
+            double totalPages =Math.Ceiling( (double) matches.Count() / 5 );
+           // totalPages = Math.Ceiling( totalPages);
+
+            matches =  matches.Skip((page-1)*5 ).Take(5);
+        //  matches =  matches.Skip(0).Take(5);
+
+         //   ViewBag.Pages = (page,totalPages);
+            ViewBag.Pages = new { page, totalPages };
+
+
             return View(matches);
         }
         public IActionResult Create()
