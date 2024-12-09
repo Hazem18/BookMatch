@@ -82,9 +82,9 @@
         document.getElementById('stadium-name').innerText = stadiumName || 'No stadium selected yet.';
     });
 
-    new TomSelect("#select-teamA", { create: false, sortField: { field: "text", direction: "asc" } });
-    new TomSelect("#select-teamB", { create: false, sortField: { field: "text", direction: "asc" } });
-    new TomSelect("#select-league", { create: false, sortField: { field: "text", direction: "asc" } });
+    new TomSelect("#select-teamA", { create: false, sortField: { field: "text", direction: "asc" }, maxOptions: false });
+    new TomSelect("#select-teamB", { create: false, sortField: { field: "text", direction: "asc" }, maxOptions: false });
+    new TomSelect("#select-league", { create: false, sortField: { field: "text", direction: "asc" }, maxOptions: false });
 </script>
 
 <style>

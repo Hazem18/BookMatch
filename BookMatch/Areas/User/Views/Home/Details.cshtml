@@ -1,0 +1,153 @@
+﻿@model Models.Match
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Match</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Stadium)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Stadium.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TeamA)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TeamA.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TeamB)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TeamB.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.League)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.League.Name)
+        </dd>
+    </dl>
+    <form asp-action="Details" method="post" class="match-form">
+        <input type="hidden" asp-for="Id"/>
+        <div class="row">
+            <!-- Dynamic Image -->
+            <div class="col-4">
+                <img id="category-image"
+                     src="@Url.Content("~/LogoUrl/Ticket/fullStadium.png")"
+                     alt="Category Image"
+                     style="width: 100%; height: auto;" />
+            </div>
+            <!-- Dropdown for categories -->
+            <div class="col-4">
+                <select id="select-category" name="ticketCategoryId" class="form-control" placeholder="Choose a category...">
+                    <option value="">Select a category...</option>
+                    @foreach (var item in ViewBag.TicketCategories)
+                    {
+                        <option value="@item.Id"
+                                data-name="@item.Name"
+                                data-available-tickets="@item.AvailableTickets"
+                                data-sector-image="@Url.Content("~/LogoUrl/Ticket/" + item.SectorImage)">
+                            @item.Name
+                        </option>
+                    }
+                </select>
+            </div>
+            <!-- Dropdown for seats -->
+            <div class="col-4">
+                <select id="select-seat" name="seatNumber" class="form-control" placeholder="Choose a seat...">
+                    <option value="">Select a seat...</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Book Ticket Match</button>
+    </form>
+</div>
+<div>
+    <a asp-action="Index">Back</a>
+</div>
+
+<script>
+    // Initialize Tom Select
+    const categorySelect = new TomSelect("#select-category", {
+        create: false,
+        sortField: { field: "text", direction: "asc" },
+        maxOptions: false
+    });
+
+    const seatSelect = new TomSelect("#select-seat", {
+        create: false,
+        sortField: { field: "number", direction: "asc" },
+        maxOptions: false
+    });
+
+    document.getElementById('select-category').addEventListener('change', function () {
+        // Get selected option
+        const selectedOption = this.options[this.selectedIndex];
+        const availableTickets = selectedOption.getAttribute('data-available-tickets');
+        const categoryName = selectedOption.getAttribute('data-name');
+        const sectorImage = selectedOption.getAttribute('data-sector-image');
+
+        console.log("Selected Category:", categoryName); // Debugging
+        console.log("Available Tickets:", availableTickets); // Debugging
+        console.log("Sector Image:", sectorImage); // Debugging
+
+        // Update the category image
+        const categoryImage = document.getElementById('category-image');
+        if (sectorImage) {
+            categoryImage.src = sectorImage; // Use full path from `data-sector-image`
+        } else {
+            categoryImage.src = '@Url.Content("~/LogoUrl/Ticket/fullStadium.png")'; // Default image
+        }
+
+        // Reference to the seat dropdown
+        const seatDropdown = document.getElementById('select-seat');
+        seatDropdown.innerHTML = ''; // Clear previous options
+
+        if (availableTickets && parseInt(availableTickets) > 0) {
+            // Populate the seats
+            for (let i = 1; i <= parseInt(availableTickets); i++) {
+                const option = document.createElement('option');
+                option.value = `${categoryName}-${i}`;
+                option.textContent = `${categoryName}-${i}`;
+                seatDropdown.appendChild(option);
+            }
+            console.log("Seats populated"); // Debugging
+        } else {
+            // Add a placeholder if no category is selected
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'Select a seat...';
+            seatDropdown.appendChild(option);
+
+            console.log("No available tickets or no category selected"); // Debugging
+        }
+
+        // Update Tom Select for seats
+        seatSelect.clearOptions();
+        Array.from(seatDropdown.options).forEach((opt) => {
+            seatSelect.addOption({ value: opt.value, text: opt.textContent });
+        });
+        seatSelect.refreshOptions();
+    });
+
+    // Trigger the change event on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        const categoryDropdown = document.getElementById('select-category');
+        categoryDropdown.dispatchEvent(new Event('change'));
+    });
+</script>
