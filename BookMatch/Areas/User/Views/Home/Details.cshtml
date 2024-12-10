@@ -4,7 +4,24 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@if (TempData["NotAllowed"] != null)
+{
+    <div style="color: white; background-color: red; padding: 10px; border-radius: 5px; margin: 20px auto; text-align: center; width: fit-content;">
+        <h1>@TempData["NotAllowed"]</h1>
+    </div>
+}
+@if (TempData["success"] != null)
+{
+    <div>
+        <h1>@TempData["success"]</h1>
+    </div>
+}
+@if (TempData["bought"] != null)
+{
+    <div>
+        <h1>@TempData["bought"]</h1>
+    </div>
+}
 <h1>Details</h1>
 
 <div>
@@ -24,13 +41,13 @@
             @Html.DisplayFor(model => model.Stadium.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TeamA)
+            team home
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TeamA.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TeamB)
+            team away
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TeamB.Name)
@@ -43,7 +60,7 @@
         </dd>
     </dl>
     <form asp-action="Details" method="post" class="match-form">
-        <input type="hidden" asp-for="Id"/>
+        <input type="hidden" asp-for="Id" />
         <div class="row">
             <!-- Dynamic Image -->
             <div class="col-4">
@@ -52,9 +69,11 @@
                      alt="Category Image"
                      style="width: 100%; height: auto;" />
             </div>
+        </div>
+        <div class="row">
             <!-- Dropdown for categories -->
             <div class="col-4">
-                <select id="select-category" name="ticketCategoryId" class="form-control" placeholder="Choose a category...">
+                <select id="select-category" name="ticketCategoryId" class="form-control" tabindex="1" placeholder="Choose a category...">
                     <option value="">Select a category...</option>
                     @foreach (var item in ViewBag.TicketCategories)
                     {
@@ -69,12 +88,13 @@
             </div>
             <!-- Dropdown for seats -->
             <div class="col-4">
-                <select id="select-seat" name="seatNumber" class="form-control" placeholder="Choose a seat...">
+                <select id="select-seat" name="seatNumber" class="form-control" tabindex="2" placeholder="Choose a seat...">
                     <option value="">Select a seat...</option>
                 </select>
             </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         </div>
-        <button type="submit" class="btn btn-primary">Book Ticket Match</button>
+        <button type="submit" class="btn btn-primary mt-5">Book Match Ticket</button>
     </form>
 </div>
 <div>
@@ -147,7 +167,13 @@
 
     // Trigger the change event on page load
     document.addEventListener('DOMContentLoaded', function () {
+        // Trigger change event to initialize
         const categoryDropdown = document.getElementById('select-category');
         categoryDropdown.dispatchEvent(new Event('change'));
+
+        // Delay setting focus slightly to ensure DOM is ready
+        setTimeout(() => {
+            categoryDropdown.focus();
+        }, 100);
     });
 </script>
