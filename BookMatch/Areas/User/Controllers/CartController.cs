@@ -24,7 +24,32 @@ namespace BookMatch.Areas.User.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var userId = userManager.GetUserId(User);
+            var cartTickets = userTicketRepository.Get(includeProps: [e => e.Ticket , e => e.Ticket.Match ,
+            e => e.Ticket.Match.TeamA ,e => e.Ticket.Match.TeamB ,e => e.Ticket.TicketCategory ], expression:e=>e.UserId == userId );
+
+            var sum = cartTickets.Sum(e => e.Ticket.TicketCategory.Price);
+            ViewBag.TotalPrice = Math.Round(sum, 2);
+
+            return View(cartTickets);
+        }
+        public IActionResult delete(int id)
+        {
+            var userId = userManager.GetUserId(User);
+            var userticket = userTicketRepository.GetOne(expression:e=>e.TicketId == id &&  userId == userId);
+
+            if (userticket != null)
+            {
+                userTicketRepository.Delete(userticket);
+                userTicketRepository.Commit();
+
+                return RedirectToAction("index");
+            }
+           
+            var cartTickets = userTicketRepository.Get(includeProps: [e => e.Ticket , e => e.Ticket.Match ,
+            e => e.Ticket.Match.TeamA ,e => e.Ticket.Match.TeamB ,e => e.Ticket.TicketCategory ], expression: e => e.UserId == userId);
+
+            return View(userticket);
         }
         public IActionResult Pay()
         {
