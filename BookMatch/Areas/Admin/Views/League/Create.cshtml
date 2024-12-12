@@ -16,7 +16,7 @@
             <input asp-for="Logo" type="file" class="form-control" id="logoInput" accept="image/*" />
             <span asp-validation-for="Logo" class="validation-error"></span>
             <div class="text-center mt-3">
-                <img id="logoPreview" src="#" alt="Selected Logo" style="display: none; max-width: 200px; max-height: 200px;" />
+                <img id="logoPreview" src="~/LogoUrl/@Model.LogoUrl" alt="Selected Logo" style="display: none; max-width: 200px; max-height: 200px;" />
             </div>
         </div>
 
