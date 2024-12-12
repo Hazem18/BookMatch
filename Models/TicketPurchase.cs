@@ -24,6 +24,12 @@ namespace Models
         public DateTime PurchaseDate { get; set; } = DateTime.Now;
 
         public string TicketCategoryName { get; set; }  
-        public string PaymentStatus { get; set; }  
+        public string PaymentStatus { get; set; }
+
+        public string StadiumName { get; set; } = null!;
+        public string TeamAName { get; set; } = null!;
+        public string TeamBName { get; set; } = null!;
+
+        public DateTime DateMatch {  get; set; } = DateTime.Now;
     }
 }

@@ -20,6 +20,7 @@ namespace DataAccess
         public DbSet<TicketCategory> TicketCategories { get; set; }
         public DbSet<TeamLeague> TeamLeagues { get; set; }
         public DbSet<UserTicket> userTickets { get; set; }
+        public DbSet<TicketPurchase> ticketPurchases { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

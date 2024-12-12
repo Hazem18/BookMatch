@@ -1,0 +1,80 @@
+﻿@model List<Models.TicketPurchase>
+
+@{
+    ViewData["Title"] = "All Tickets";
+}
+
+<h1 class="text-center text-success"> All Purchased Tickets</h1>
+
+@if (Model == null || Model.Count == 0)
+{
+    <p>No tickets found.</p>
+}
+else
+{
+    <div class="tickets-container">
+        @foreach (var ticket in Model)
+        {
+            <div class="ticket-card">
+                <div class="ticket-header">
+                    <h2 class ="text-success">@ticket.TicketCategoryName</h2>
+                    <p><strong class="text-success">Match Date:</strong> @ticket.Ticket?.Match?.DateTime.ToString("yyyy-MM-dd HH:mm")</p>
+                </div>
+                <div class="ticket-body">
+                    <p><strong class="text-success">Seat Number:</strong> @ticket.SeatNumber</p>
+                    <p><strong class="text-success">Price:</strong> @ticket.Price.ToString("C")</p>
+                    <p><strong class="text-success">Purchase Date:</strong> @ticket.PurchaseDate.ToString("yyyy-MM-dd HH:mm")</p>
+                    <p><strong class="text-success">Payment Status:</strong> @ticket.PaymentStatus</p>
+                </div>
+                <div class="ticket-footer">
+                    <p><strong class="text-success">Stadium:</strong> @ticket.StadiumName</p>
+                    <p><strong class="text-success">Team A:</strong> @ticket.TeamAName</p>
+                    <p><strong class="text-success">Team B:</strong> @ticket.TeamBName</p>
+                    <p><strong class="text-success">Application Name:</strong> @ticket.ApplicationName</p>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<style>
+    .tickets-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .ticket-card {
+        width: 300px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        background-color: #f9f9f9;
+    }
+
+    .ticket-header {
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+
+    .ticket-header h2 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+
+    .ticket-body, .ticket-footer {
+        margin-top: 10px;
+    }
+
+    .ticket-body p, .ticket-footer p {
+        margin: 5px 0;
+    }
+
+    .ticket-footer {
+        font-size: 0.9rem;
+        color: #555;
+    }
+</style>

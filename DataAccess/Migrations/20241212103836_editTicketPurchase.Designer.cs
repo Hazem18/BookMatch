@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241212103836_editTicketPurchase")]
+    partial class editTicketPurchase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2ae5cba3-6348-4d0d-af5b-7eeb862b2d3f",
+                            Id = "d80287a7-5b66-4cbf-b654-5411998bdedc",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "d043ab8f-2cd2-40d4-bc07-9e9570b7476f",
+                            Id = "f3311758-8b8e-40b0-9505-6b9084165ff8",
                             Name = "User",
                             NormalizedName = "User"
                         });
@@ -452,9 +455,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("ApplicationName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateMatch")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentStatus")
                         .IsRequired()

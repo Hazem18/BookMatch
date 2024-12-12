@@ -1,0 +1,70 @@
+﻿@model Models.TicketPurchase
+
+@{
+    ViewData["Title"] = "Purchase Confirmation";
+}
+
+<h1 class="text-center text-success">Purchase Confirmation</h1>
+
+@if (Model == null)
+{
+    <p>There was an issue with your purchase.</p>
+}
+else
+{
+    <h3 class="text-center text-success">The ticket has been purchased successfully:</h3>
+    <div class="ticket-card">
+        <div class="ticket-header">
+            <h2 class="text-success">@Model.TicketCategoryName</h2>
+            <p><strong class="text-success">Match Date:</strong> @Model.DateMatch.ToString("yyyy-MM-dd HH:mm")</p>
+        </div>
+        <div class="ticket-body">
+            <p><strong class="text-success">Seat Number:</strong> @Model.SeatNumber</p>
+            <p><strong class="text-success">Price:</strong> @Model.Price.ToString("C")</p>
+            <p><strong class="text-success">Purchase Date:</strong> @Model.PurchaseDate.ToString("yyyy-MM-dd HH:mm")</p>
+            <p><strong class="text-success">Status:</strong> @Model.PaymentStatus</p>
+        </div>
+        <div class="ticket-footer">
+            <p><strong class="text-success">Application Name:</strong> @Model.ApplicationName</p>
+            <p><strong class="text-success">Stadium:</strong> @Model.StadiumName</p>
+            <p><strong class="text-success">Team A:</strong> @Model.TeamAName</p>
+            <p><strong class="text-success">Team B:</strong> @Model.TeamBName</p>
+        </div>
+    </div>
+}
+
+<style>
+    .ticket-card {
+        width: 400px;
+        margin: 20px auto;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
+
+    .ticket-header {
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+
+        .ticket-header h2 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+    .ticket-body, .ticket-footer {
+        margin-top: 15px;
+    }
+
+        .ticket-body p, .ticket-footer p {
+            margin: 5px 0;
+        }
+
+    .ticket-footer {
+        font-size: 0.9rem;
+        color: #555;
+    }
+</style>
