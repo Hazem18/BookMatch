@@ -5,8 +5,7 @@ using System.Diagnostics;
 
 namespace BookMatch.Areas.Customer.Controllers
 {
-    [Area("User")]
-    public class HomeController : Controller
+    [Area("User")]       public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMatchRepository matchRepository;
