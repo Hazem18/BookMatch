@@ -4,76 +4,60 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @if (TempData["NotAllowed"] != null)
 {
-    <div style="color: white; background-color: red; padding: 10px; border-radius: 5px; margin: 20px auto; text-align: center; width: fit-content;">
+    <div class="alert-box alert-danger">
         <h1>@TempData["NotAllowed"]</h1>
     </div>
 }
 @if (TempData["success"] != null)
 {
-    <div>
+    <div class="alert-box alert-success">
         <h1>@TempData["success"]</h1>
     </div>
 }
 @if (TempData["bought"] != null)
 {
-    <div>
+    <div class="alert-box alert-info">
         <h1>@TempData["bought"]</h1>
     </div>
 }
-<h1>Details</h1>
 
-<div>
-    <h4>Match</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DateTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DateTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Stadium)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Stadium.Name)
-        </dd>
-        <dt class="col-sm-2">
-            team home
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TeamA.Name)
-        </dd>
-        <dt class="col-sm-2">
-            team away
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TeamB.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.League)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.League.Name)
-        </dd>
-    </dl>
+<div class="details-container">
+    <h1 class="details-title">Match Details</h1>
+
+    <div class="details-card">
+        <h4>Match Information</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DateTime)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.DateTime)</dd>
+
+            <dt class="col-sm-3">Stadium</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Stadium.Name)</dd>
+
+            <dt class="col-sm-3">Team Home</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.TeamA.Name)</dd>
+
+            <dt class="col-sm-3">Team Away</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.TeamB.Name)</dd>
+
+            <dt class="col-sm-3">League</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.League.Name)</dd>
+        </dl>
+    </div>
+
     <form asp-action="Details" method="post" class="match-form">
         <input type="hidden" asp-for="Id" />
-        <div class="row">
-            <!-- Dynamic Image -->
-            <div class="col-4">
-                <img id="category-image"
-                     src="@Url.Content("~/LogoUrl/Ticket/fullStadium.png")"
-                     alt="Category Image"
-                     style="width: 100%; height: auto;" />
+
+        <div class="form-section">
+            <div class="image-section">
+                <img id="category-image" src="@Url.Content("~/LogoUrl/Ticket/fullStadium.png")" alt="Stadium View" class="stadium-image" />
             </div>
-        </div>
-        <div class="row">
-            <!-- Dropdown for categories -->
-            <div class="col-4">
-                <select id="select-category" name="ticketCategoryId" class="form-control" tabindex="1" placeholder="Choose a category...">
+
+            <div class="dropdown-section">
+                <select id="select-category" name="ticketCategoryId" class="form-control custom-select" tabindex="1">
                     <option value="">Select a category...</option>
                     @foreach (var item in ViewBag.TicketCategories)
                     {
@@ -85,24 +69,137 @@
                         </option>
                     }
                 </select>
-            </div>
-            <!-- Dropdown for seats -->
-            <div class="col-4">
-                <select id="select-seat" name="seatNumber" class="form-control" tabindex="2" placeholder="Choose a seat...">
+
+                <select id="select-seat" name="seatNumber" class="form-control custom-select" tabindex="2">
                     <option value="">Select a seat...</option>
                 </select>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
             </div>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         </div>
-        <button type="submit" class="btn btn-primary mt-5">Book Match Ticket</button>
+
+        <button type="submit" class="btn-ticket">Book Match Ticket</button>
     </form>
-</div>
-<div>
-    <a asp-action="Index">Back</a>
+
+    <div class="back-link">
+        <a asp-action="Index">Back</a>
+    </div>
 </div>
 
+<style>
+    body {
+        background-color: #f0f5f0;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .details-container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #1e7e34, #28a745);
+        color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 128, 0, 0.3);
+    }
+
+    .details-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #ffeb3b;
+    }
+
+    .alert-box {
+        text-align: center;
+        padding: 10px;
+        margin: 20px auto;
+        border-radius: 5px;
+        width: fit-content;
+    }
+
+    .alert-danger {
+        background-color: red;
+        color: white;
+    }
+
+    .alert-success {
+        background-color: green;
+        color: white;
+    }
+
+    .alert-info {
+        background-color: blue;
+        color: white;
+    }
+
+    .details-card {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .row {
+        margin-bottom: 10px;
+    }
+
+    .stadium-image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        border: 2px solid #fff;
+    }
+
+    .form-section {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .dropdown-section {
+        flex: 1;
+        margin-left: 20px;
+    }
+
+    .custom-select {
+        margin-bottom: 10px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .btn-ticket {
+        display: inline-block;
+        margin-top: 20px;
+        background: #ffc107;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+        .btn-ticket:hover {
+            background: #ffd454;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 193, 7, 0.4);
+        }
+
+    .back-link a {
+        color: #ffc107;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+</style>
+
 <script>
-    // Initialize Tom Select
     const categorySelect = new TomSelect("#select-category", {
         create: false,
         sortField: { field: "text", direction: "asc" },
@@ -116,64 +213,34 @@
     });
 
     document.getElementById('select-category').addEventListener('change', function () {
-        // Get selected option
         const selectedOption = this.options[this.selectedIndex];
         const availableTickets = selectedOption.getAttribute('data-available-tickets');
-        const categoryName = selectedOption.getAttribute('data-name');
         const sectorImage = selectedOption.getAttribute('data-sector-image');
 
-        console.log("Selected Category:", categoryName); // Debugging
-        console.log("Available Tickets:", availableTickets); // Debugging
-        console.log("Sector Image:", sectorImage); // Debugging
-
-        // Update the category image
         const categoryImage = document.getElementById('category-image');
-        if (sectorImage) {
-            categoryImage.src = sectorImage; // Use full path from `data-sector-image`
-        } else {
-            categoryImage.src = '@Url.Content("~/LogoUrl/Ticket/fullStadium.png")'; // Default image
-        }
+        categoryImage.src = sectorImage || '@Url.Content("~/LogoUrl/Ticket/fullStadium.png")';
 
-        // Reference to the seat dropdown
         const seatDropdown = document.getElementById('select-seat');
-        seatDropdown.innerHTML = ''; // Clear previous options
+        seatDropdown.innerHTML = '';
 
         if (availableTickets && parseInt(availableTickets) > 0) {
-            // Populate the seats
             for (let i = 1; i <= parseInt(availableTickets); i++) {
                 const option = document.createElement('option');
-                option.value = `${categoryName}-${i}`;
-                option.textContent = `${categoryName}-${i}`;
+                option.value = `${selectedOption.text}-${i}`;
+                option.textContent = `${selectedOption.text}-${i}`;
                 seatDropdown.appendChild(option);
             }
-            console.log("Seats populated"); // Debugging
         } else {
-            // Add a placeholder if no category is selected
             const option = document.createElement('option');
             option.value = '';
             option.textContent = 'Select a seat...';
             seatDropdown.appendChild(option);
-
-            console.log("No available tickets or no category selected"); // Debugging
         }
 
-        // Update Tom Select for seats
         seatSelect.clearOptions();
-        Array.from(seatDropdown.options).forEach((opt) => {
+        Array.from(seatDropdown.options).forEach(opt => {
             seatSelect.addOption({ value: opt.value, text: opt.textContent });
         });
         seatSelect.refreshOptions();
-    });
-
-    // Trigger the change event on page load
-    document.addEventListener('DOMContentLoaded', function () {
-        // Trigger change event to initialize
-        const categoryDropdown = document.getElementById('select-category');
-        categoryDropdown.dispatchEvent(new Event('change'));
-
-        // Delay setting focus slightly to ensure DOM is ready
-        setTimeout(() => {
-            categoryDropdown.focus();
-        }, 100);
     });
 </script>

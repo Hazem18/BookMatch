@@ -18,12 +18,14 @@ namespace BookMatch.Areas.User.Controllers
         private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
         private readonly Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> roleManager;
         private readonly IUserTicketRepository userTicketRepository;
+        private readonly ILeagueRepository leagueRepository;
 
-
-        public HomeController(ILogger<HomeController> logger, ITicketRepository ticketRepository,
-            IMatchRepository matchRepository , ITicketCategoryRepository ticketCategoryRepository,
+        public HomeController(ILogger<HomeController> logger,
+            ITicketRepository ticketRepository,
+            IMatchRepository matchRepository , 
+            ITicketCategoryRepository ticketCategoryRepository,
             UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager ,
-           IUserTicketRepository userTicketRepository)
+           IUserTicketRepository userTicketRepository, ILeagueRepository leagueRepository)
         { 
             _logger = logger;
             this.ticketRepository = ticketRepository;
@@ -32,12 +34,37 @@ namespace BookMatch.Areas.User.Controllers
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.userTicketRepository = userTicketRepository;
-            
+            this.leagueRepository=leagueRepository;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var matches = matchRepository.Get
+           (includeProps:
+           [e => e.League,
+           e => e.Stadium,
+           e => e.Tickets,
+           e => e.TeamA,
+           e => e.TeamB]);
+            ViewBag.Leagues = leagueRepository.Get();
+            return View(matches);
+        }
+
+        public IActionResult LeagueMatches(int LeagueId)
+        {
+            var matches = matchRepository.Get
+           (includeProps:
+           [e => e.League,
+           e => e.Stadium,
+           e => e.Tickets,
+           e => e.TeamA,
+           e => e.TeamB], expression: e => e.LeagueId == LeagueId);
+            // Retrieve the league name and set it in ViewData for the page title
+            var leagueName = leagueRepository.
+            GetOne(expression: e => e.Id == LeagueId)?.Name;
+            ViewData["LeagueName"] = leagueName;
+            ViewBag.Leagues = leagueRepository.Get();
+            return View(matches);
         }
         public IActionResult Details(int id) 
         {
