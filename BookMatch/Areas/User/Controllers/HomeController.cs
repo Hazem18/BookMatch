@@ -142,7 +142,7 @@ includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
                     //chech if someone else booked the ticket in his cart before 10 mins runs out
 
                     var timedTicket = userTicketRepository.GetOne(expression: e => e.Ticket.MatchId == id && e.Ticket.SeatNumber == seatNumber
-                      && e.BookingDate.AddMinutes(3) > DateTime.Now  , includeProps:[e=>e.Ticket], tracked: false);
+                      && e.BookingDate.AddMinutes(10) > DateTime.Now  , includeProps:[e=>e.Ticket], tracked: false);
 
                     if ( timedTicket != null )
                     {
@@ -155,11 +155,6 @@ includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
                         return View(match);
                     }
 
-               //     var TimedTicket = user
-                    
-
-                  /*  if (ticketCategoryId != null && seatNumber != null)
-                    {*/
 
                         var ticket = ticketRepository.GetOne(expression: e => e.MatchId == id && e.SeatNumber == seatNumber);
                         if (ticket == null)
@@ -189,14 +184,6 @@ includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
                         TempData["success"] = "ticket add to your cart successfully";
 
                         return RedirectToAction();
-                  //  }
-                    //else
-                    //{
-                    //    var ticketcategories = ticketCategoryRepository.Get();
-                    //    ViewBag.TicketCategories = ticketcategories;
-                    //    ModelState.AddModelError(string.Empty, "category requird and seat reaquired");
-                    //    return View();
-                    //}
 
                 }
             }
