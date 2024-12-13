@@ -19,21 +19,27 @@
                     @foreach (var item in Model)
                     {
                         <div class="row border-bottom pb-3">
-                            <div class="col-12 col-lg-6 pt-md-3">
+                            <div class="col-4 col-lg-3 pt-md-3">
                                 <h5 class="text-uppercase text-secondary"><strong>@item.Ticket.Match.TeamA.Name</strong></h5>
                                 <h5 class="text-uppercase text-secondary"><strong>@item.Ticket.Match.TeamB.Name</strong></h5>
                             </div>
-                            <div class="col-12 col-lg-5 text-center row">
-                                <div class="col-4 text-md-right pt-2 pt-md-4">
+                            <div class="col-8 col-lg-8  row">
+                                <div class="col-3 text-md-right pt-2 pt-md-4">
+                                    <h6 class="fw-semibold">DateTime</h6>
                                     <h6 class="fw-semibold">@item.Ticket.Match.DateTime</h6>
                                 </div>
                                 <div class="col-2 text-md-right pt-2 pt-md-4">
+                                    <h6 class="fw-semibold">Ticket Category</h6>
                                     <h6 class="fw-semibold">@item.Ticket.TicketCategory.Name</h6>
+                                </div><div class="col-2 text-md-right pt-2 pt-md-4">
+                                    <h6 class="fw-semibold">Seat Number</h6>
+                                    <h6 class="fw-semibold">@item.Ticket.SeatNumber</h6>
                                 </div>
                                 <div class="col-3 text-md-right pt-2 pt-md-4">
+                                    <h6 class="fw-semibold">Price</h6>
                                     <h6 class="fw-semibold">@item.Ticket.TicketCategory.Price.ToString("c")</h6>
                                 </div>
-                                <div class="col-1 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
+                                <div class="col-1 col-sm-4 col-lg-2  text-right pt-2">
                                     <a asp-area="User" asp-controller="Cart" asp-action="delete" asp-route-id="@item.Ticket.Id" class="btn btn-danger bg-gradient py-2">
                                         <i class="bi bi-trash-fill"></i>
                                     </a>

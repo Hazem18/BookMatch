@@ -111,7 +111,7 @@ namespace BookMatch.Areas.User.Controllers
                     var userId = userManager.GetUserId(User);
                     var bookedTicket = userTicketRepository.GetOne(includeProps: [e => e.Ticket], expression: e => e.UserId == userId && e.Ticket.MatchId == id ,tracked:false);
                     var purchasedTicket = ticketPurchaseRepository.GetOne(expression: e => e.UserId == userId &&
-                    e.Ticket.MatchId == id && e.SeatNumber == seatNumber , includeProps:[e=>e.Ticket], tracked: false); 
+                    e.Ticket.MatchId == id , includeProps:[e=>e.Ticket], tracked: false); 
                     if (bookedTicket != null || purchasedTicket != null )
                     {
                         TempData["bought"] = "you already booked a ticket of this match";
