@@ -67,14 +67,20 @@ namespace BookMatch.Areas.User.Controllers
                 includeProps: [T => T.Ticket.TicketCategory, m => m.Ticket.Match, u => u.User],
                 expression: a => a.UserId == appUser,
                 tracked: false);
-           
+
+            if (CartDb == null)
+            {
+
+                return RedirectToAction("Index", "Cart", new { Area = "User" });
+            }
+
             var ticket = CartDb.Ticket;
             var ticketCategory = ticket.TicketCategory;
             var match = ticket.Match;
-            if (CartDb == null || CartDb.Ticket == null)
-            {
-                return View("Error", new ErrorViewModel { Message = "No ticket found or ticket data is incomplete." });
-            }
+            //if (CartDb == null || CartDb.Ticket == null)
+            //{
+            //    return View("Error", new ErrorViewModel { Message = "No ticket found or ticket data is incomplete." });
+            //}
 
             var options = new SessionCreateOptions
             {
