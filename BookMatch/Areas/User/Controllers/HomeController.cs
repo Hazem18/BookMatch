@@ -98,7 +98,7 @@ namespace BookMatch.Areas.User.Controllers
                 {
                     var ticketcategories = ticketCategoryRepository.Get();
                     ViewBag.TicketCategories = ticketcategories;
-                    TempData["NotAllowed"] = "not allowed to book tickets as an admin";
+                    TempData["NotAllowed"] = "Not Allowed To Book Tickets as An Admin";
 
 
                     var match = matchRepository.GetOne(expression: e => e.Id == id,
@@ -114,7 +114,7 @@ namespace BookMatch.Areas.User.Controllers
                     e.Ticket.MatchId == id , includeProps:[e=>e.Ticket], tracked: false); 
                     if (bookedTicket != null || purchasedTicket != null )
                     {
-                        TempData["bought"] = "you already booked a ticket of this match";
+                        TempData["bought"] = "You Already Booked A Ticket Of This Match";
                         var ticketcategories = ticketCategoryRepository.Get();
                         ViewBag.TicketCategories = ticketcategories;
 
@@ -130,7 +130,7 @@ namespace BookMatch.Areas.User.Controllers
 
                     if ( puchasedSeat != null )
                     {
-                        TempData["bought"] = "this seat has been already bought , please choose other seat, (purches)";
+                        TempData["bought"] = "This Seat Has Been Already Bought, Please Choose Other Seat, (Purches)";
                         var ticketcategories = ticketCategoryRepository.Get();
                         ViewBag.TicketCategories = ticketcategories;
 
@@ -146,7 +146,7 @@ includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
 
                     if ( timedTicket != null )
                     {
-                        TempData["bought"] = "this seat has been already bought , please choose other seat ,(10 mins)";
+                        TempData["bought"] = "This Seat Has Been Already Bought, Please Choose Other Seat, (10 mins)";
                         var ticketcategories = ticketCategoryRepository.Get();
                         ViewBag.TicketCategories = ticketcategories;
 
@@ -181,7 +181,7 @@ includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
                         userTicketRepository.Create(userTicket);
                         userTicketRepository.Commit();
 
-                        TempData["success"] = "ticket add to your cart successfully";
+                        TempData["success"] = "Ticket Add To Your Cart Successfully";
 
                         return RedirectToAction();
 
@@ -191,7 +191,7 @@ includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
             {
                 var ticketcategories = ticketCategoryRepository.Get();
                 ViewBag.TicketCategories = ticketcategories;
-                ModelState.AddModelError(string.Empty, "category requird and seat reaquired ");
+                ModelState.AddModelError(string.Empty, "Category Requird And Seat Reaquired ");
 
                 var match = matchRepository.GetOne(expression: e => e.Id == id,
 includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);

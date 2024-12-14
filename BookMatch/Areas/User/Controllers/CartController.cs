@@ -63,24 +63,16 @@ namespace BookMatch.Areas.User.Controllers
                 return RedirectToAction("Login", "Account", new { Area = "identity" });
             }
 
-            var CartDb = userTicketRepository.GetOne(
+            var CartDb = userTicketRepository.Get(
                 includeProps: [T => T.Ticket.TicketCategory, m => m.Ticket.Match, u => u.User],
                 expression: a => a.UserId == appUser,
                 tracked: false);
 
-            if (CartDb == null)
+            if ( CartDb == null || !CartDb.Any())
             {
-
-                return RedirectToAction("Index", "Cart", new { Area = "User" });
+                ViewBag.ErrorMessage = "The Cart Is Empty. Please Add Items To Proceed With The Payment.";
+                return View("Index", CartDb); 
             }
-
-            var ticket = CartDb.Ticket;
-            var ticketCategory = ticket.TicketCategory;
-            var match = ticket.Match;
-            //if (CartDb == null || CartDb.Ticket == null)
-            //{
-            //    return View("Error", new ErrorViewModel { Message = "No ticket found or ticket data is incomplete." });
-            //}
 
             var options = new SessionCreateOptions
             {
@@ -91,29 +83,34 @@ namespace BookMatch.Areas.User.Controllers
                 CancelUrl = $"{Request.Scheme}://{Request.Host}/User/checkout/cancel",
             };
 
-            var lineItem = new SessionLineItemOptions()
+            foreach (var cartItem in CartDb)
             {
-                PriceData = new SessionLineItemPriceDataOptions
+                var ticket = cartItem.Ticket;
+                var ticketCategory = ticket.TicketCategory;
+                var match = ticket.Match;
+
+                var lineItem = new SessionLineItemOptions
                 {
-                    Currency = "egp",
-                    ProductData = new SessionLineItemPriceDataProductDataOptions
+                    PriceData = new SessionLineItemPriceDataOptions
                     {
-                        Name = $"Ticket Category:  {ticketCategory.Name}",
-                        Description = $"Match Date: {match.DateTime:yyyy-MM-dd HH:mm}",
-
-                        Metadata = new Dictionary<string, string>
-
-         {
-             {
-                         "SeatNumber", ticket.SeatNumber ?? "N/A" }
-         }
+                        Currency = "egp",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = $"Ticket Category: {ticketCategory.Name}",
+                            Description = $"Match Date: {match.DateTime:yyyy-MM-dd HH:mm}",
+                            
+                            Metadata = new Dictionary<string, string>
+                    {
+                        { "SeatNumber", ticket.SeatNumber ?? "N/A" }
+                    }
+                        },
+                        UnitAmount = (long)(ticketCategory.Price * 100), 
                     },
-                    UnitAmount = (long)(ticketCategory.Price * 100),
-                },
-                Quantity = 1
-            };
+                    Quantity = 1
+                };
 
-            options.LineItems.Add(lineItem);
+                options.LineItems.Add(lineItem);
+            }
 
             var service = new SessionService();
             var session = service.Create(options);
@@ -130,56 +127,69 @@ namespace BookMatch.Areas.User.Controllers
                 return RedirectToAction("Login", "Account", new { Area = "identity" });
             }
 
-            var CartDb = userTicketRepository.GetOne(
-                includeProps: new Expression<Func<UserTicket, object>>[] {
-                    t => t.Ticket.TicketCategory,
-                    t => t.Ticket.Match, 
-                    t => t.Ticket.Match.Stadium, 
-                    t => t.Ticket.Match.TeamA, 
-                    t => t.Ticket.Match.TeamB, 
-                    t => t.User
-                },
-                expression: a => a.UserId == appUser,
-                tracked: false
-            );
+            var CartDb = userTicketRepository.Get(includeProps: [
+                
+            t => t.Ticket.TicketCategory,
+            t => t.Ticket.Match,
+            t => t.Ticket.Match.Stadium,
+            t => t.Ticket.Match.TeamA,
+            t => t.Ticket.Match.TeamB,
+            t => t.User
+            ],expression: a => a.UserId == appUser,
+                tracked: true );
 
-            if (CartDb == null || CartDb.Ticket == null || CartDb.Ticket.TicketCategory == null || CartDb.Ticket.Match == null)
+            if (CartDb == null || !CartDb.Any())
             {
-                return View("Error", new ErrorViewModel { Message = "Data is missing or incomplete." });
+                return RedirectToAction("Index", "Cart", new { Area = "User" });
             }
 
-            var match = CartDb.Ticket.Match;
-            if (match.Stadium == null || match.TeamA == null || match.TeamB == null)
-            {
-                return RedirectToAction("Notfound", "Home");
+            var ticketPurchases = new List<TicketPurchase>();
 
+            foreach (var cartItem in CartDb)
+            {
+                if (cartItem.Ticket == null || cartItem.Ticket.TicketCategory == null || cartItem.Ticket.Match == null)
+                {
+                    continue;
+                }
+
+                var match = cartItem.Ticket.Match;
+
+                if (match.Stadium == null || match.TeamA == null || match.TeamB == null)
+                {
+                    continue;
+                }
+
+                var ticketPurchase = new TicketPurchase
+                {
+                    UserId = appUser,
+                    ApplicationName = cartItem.User?.UserName,
+                    TicketId = cartItem.Ticket.Id,
+                    SeatNumber = cartItem.Ticket.SeatNumber,
+                    Price = cartItem.Ticket.TicketCategory.Price,
+                    PurchaseDate = DateTime.Now,
+                    TicketCategoryName = cartItem.Ticket.TicketCategory.Name,
+                    PaymentStatus = "Paid",
+                    StadiumName = match.Stadium.Name,
+                    TeamAName = match.TeamA.Name,
+                    TeamBName = match.TeamB.Name,
+                    DateMatch = match.DateTime,
+                };
+
+                ticketPurchaseRepository.Create(ticketPurchase);
+                ticketPurchases.Add(ticketPurchase);
             }
-            var ticketPurchase = new TicketPurchase
-            {
-                UserId = appUser,
-                ApplicationName = CartDb.User.UserName,
-                TicketId = CartDb.Ticket.Id,
-                SeatNumber = CartDb.Ticket.SeatNumber,
-                Price = CartDb.Ticket.TicketCategory.Price,
-                PurchaseDate = DateTime.Now,
-                TicketCategoryName = CartDb.Ticket.TicketCategory.Name,
-                PaymentStatus = "Paid",
-                StadiumName = match.Stadium.Name,
-                TeamAName = match.TeamA.Name,
-                TeamBName = match.TeamB.Name,
-                DateMatch = match.DateTime,
-            };
 
-            ticketPurchaseRepository.Create(ticketPurchase);
             ticketPurchaseRepository.Commit();
 
-            userTicketRepository.Delete(CartDb);
+            foreach (var cartItem in CartDb)
+            {
+                userTicketRepository.Delete(cartItem);
+            }
+
             userTicketRepository.Commit();
 
-            return View(ticketPurchase);
-
+            return View(ticketPurchases);
         }
-
 
     }
 }

@@ -1,4 +1,10 @@
-﻿<form method="post">
+﻿@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-warning">
+        @ViewBag.ErrorMessage
+    </div>
+}
+<form method="post">
     <br />
     <div class="card shadow border-0">
         <div class="card-header bg-success bg-gradient text-light ml-0 py-4">

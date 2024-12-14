@@ -8,7 +8,7 @@
 
 @if (Model == null || Model.Count == 0)
 {
-    <p>No tickets found.</p>
+    <p class="text-success">No Tickets Found...</p>
 }
 else
 {
@@ -18,7 +18,7 @@ else
         @foreach (var group in UserTickets)
         {
             <div class="user-section">
-                <h2 class="text-primary">User: @group.Key</h2>
+                <h2 class="text-success">User: @group.Key</h2>
                 <div class="tickets-container">
                     @foreach (var ticket in group)
                     {
@@ -63,7 +63,7 @@ else
         .user-section h2 {
             margin-bottom: 20px;
             font-size: 1.8rem;
-            border-bottom: 2px solid #007bff;
+            border-bottom: 2px solid #28a745;
             padding-bottom: 10px;
         }
 

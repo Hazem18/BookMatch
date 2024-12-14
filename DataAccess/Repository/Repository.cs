@@ -44,6 +44,7 @@ namespace DataAccess.Repository
             }
 
             return query.ToList();
+
         }
 
         public T? GetOne(Expression<Func<T, object>>[]? includeProps = null, Expression<Func<T, bool>>? expression = null, bool tracked = true)
