@@ -26,7 +26,7 @@ namespace BookMatch.Areas.User.Controllers
             IMatchRepository matchRepository,
             ITicketCategoryRepository ticketCategoryRepository,
             UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
-           IUserTicketRepository userTicketRepository, ILeagueRepository leagueRepository ,
+           IUserTicketRepository userTicketRepository, ILeagueRepository leagueRepository,
            ITicketPurchaseRepository ticketPurchaseRepository)
         {
             _logger = logger;
@@ -79,6 +79,19 @@ namespace BookMatch.Areas.User.Controllers
             }
             else
             {
+
+                IEnumerable<string> puchasedSeat = ticketPurchaseRepository.Get(expression: e => e.Ticket.MatchId == id 
+                 , includeProps: [e => e.Ticket], tracked: false).Select(e => e.SeatNumber);
+
+                IEnumerable<string> timedTicketSeats = userTicketRepository.Get(expression: e => e.Ticket.MatchId == id 
+                  && e.BookingDate.AddMinutes(10) > DateTime.Now, includeProps: [e => e.Ticket], tracked: false).Select(e=>e.Ticket.SeatNumber);
+
+
+                var bookedSeats = puchasedSeat.Union(timedTicketSeats).ToList();
+
+
+                ViewBag.BookedSeats= bookedSeats;
+
                 var ticketcategories = ticketCategoryRepository.Get();
                 ViewBag.TicketCategories = ticketcategories;
                 return View(match);
@@ -102,88 +115,88 @@ namespace BookMatch.Areas.User.Controllers
 
 
                     var match = matchRepository.GetOne(expression: e => e.Id == id,
-           includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
+                      includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
                     return View(match);
                 }
                 else
                 {
                     //check if same user book/ bought a ticket of the same match
                     var userId = userManager.GetUserId(User);
-                    var bookedTicket = userTicketRepository.GetOne(includeProps: [e => e.Ticket], expression: e => e.UserId == userId && e.Ticket.MatchId == id ,tracked:false);
+                    var bookedTicket = userTicketRepository.GetOne(includeProps: [e => e.Ticket], expression: e => e.UserId == userId && e.Ticket.MatchId == id, tracked: false);
                     var purchasedTicket = ticketPurchaseRepository.GetOne(expression: e => e.UserId == userId &&
-                    e.Ticket.MatchId == id , includeProps:[e=>e.Ticket], tracked: false); 
-                    if (bookedTicket != null || purchasedTicket != null )
+                    e.Ticket.MatchId == id, includeProps: [e => e.Ticket], tracked: false);
+                    if (bookedTicket != null || purchasedTicket != null)
                     {
                         TempData["bought"] = "You Already Booked A Ticket Of This Match";
                         var ticketcategories = ticketCategoryRepository.Get();
                         ViewBag.TicketCategories = ticketcategories;
 
                         var match = matchRepository.GetOne(expression: e => e.Id == id,
- includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
+                        includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
                         return View(match);
                     }
 
                     //chech if someone else bought the same ticket with the same seat number 
 
-                    var puchasedSeat = ticketPurchaseRepository.GetOne(expression:e=>e.Ticket.MatchId ==id && e.SeatNumber == seatNumber
-                     , includeProps: [e=>e.Ticket], tracked: false);
+                    var puchasedSeat = ticketPurchaseRepository.GetOne(expression: e => e.Ticket.MatchId == id && e.SeatNumber == seatNumber
+                     , includeProps: [e => e.Ticket], tracked: false);
 
-                    if ( puchasedSeat != null )
+                    if (puchasedSeat != null)
                     {
                         TempData["bought"] = "This Seat Has Been Already Bought, Please Choose Other Seat, (Purches)";
                         var ticketcategories = ticketCategoryRepository.Get();
                         ViewBag.TicketCategories = ticketcategories;
 
                         var match = matchRepository.GetOne(expression: e => e.Id == id,
-includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
+                        includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
                         return View(match);
                     }
 
                     //chech if someone else booked the ticket in his cart before 10 mins runs out
 
                     var timedTicket = userTicketRepository.GetOne(expression: e => e.Ticket.MatchId == id && e.Ticket.SeatNumber == seatNumber
-                      && e.BookingDate.AddMinutes(10) > DateTime.Now  , includeProps:[e=>e.Ticket], tracked: false);
+                      && e.BookingDate.AddMinutes(10) > DateTime.Now, includeProps: [e => e.Ticket], tracked: false);
 
-                    if ( timedTicket != null )
+                    if (timedTicket != null)
                     {
                         TempData["bought"] = "This Seat Has Been Already Bought, Please Choose Other Seat, (10 mins)";
                         var ticketcategories = ticketCategoryRepository.Get();
                         ViewBag.TicketCategories = ticketcategories;
 
                         var match = matchRepository.GetOne(expression: e => e.Id == id,
-includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
+                    includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
                         return View(match);
                     }
 
 
-                        var ticket = ticketRepository.GetOne(expression: e => e.MatchId == id && e.SeatNumber == seatNumber);
-                        if (ticket == null)
+                    var ticket = ticketRepository.GetOne(expression: e => e.MatchId == id && e.SeatNumber == seatNumber);
+                    if (ticket == null)
+                    {
+
+                        ticket = new Ticket()
                         {
-
-                            ticket = new Ticket()
-                            {
-                                MatchId = id,
-                                TicketCategoryId = ticketCategoryId,
-                                SeatNumber = seatNumber
-                            };
-                            ticketRepository.Create(ticket);
-                            ticketRepository.Commit();
-
-                        }
-
-                        var userTicket = new UserTicket()
-                        {
-                            UserId = userId,
-                            TicketId = ticket.Id,
-                            BookingDate = DateTime.Now
-                            
+                            MatchId = id,
+                            TicketCategoryId = ticketCategoryId,
+                            SeatNumber = seatNumber
                         };
-                        userTicketRepository.Create(userTicket);
-                        userTicketRepository.Commit();
+                        ticketRepository.Create(ticket);
+                        ticketRepository.Commit();
 
-                        TempData["success"] = "Ticket Add To Your Cart Successfully";
+                    }
 
-                        return RedirectToAction();
+                    var userTicket = new UserTicket()
+                    {
+                        UserId = userId,
+                        TicketId = ticket.Id,
+                        BookingDate = DateTime.Now
+
+                    };
+                    userTicketRepository.Create(userTicket);
+                    userTicketRepository.Commit();
+
+                    TempData["success"] = "Ticket Add To Your Cart Successfully";
+
+                    return RedirectToAction();
 
                 }
             }
@@ -194,7 +207,7 @@ includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
                 ModelState.AddModelError(string.Empty, "Category Requird And Seat Reaquired ");
 
                 var match = matchRepository.GetOne(expression: e => e.Id == id,
-includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
+                includeProps: [e => e.Stadium, e => e.TeamA, e => e.TeamB, e => e.League]);
                 return View(match);
             }
         }

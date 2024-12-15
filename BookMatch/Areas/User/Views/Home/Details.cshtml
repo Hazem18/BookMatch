@@ -197,9 +197,19 @@
         .back-link a:hover {
             text-decoration: underline;
         }
+
+    .option.disabled {
+        color: #ccc;
+        pointer-events: none;
+    }
 </style>
 
 <script>
+    // Debugging: Ensure booked seats data is loaded
+    const bookedSeats = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.BookedSeats ?? new List<string>()));
+    console.log("Booked Seats:", bookedSeats);
+
+    // Initialize Tom Select for category and seat dropdowns
     const categorySelect = new TomSelect("#select-category", {
         create: false,
         sortField: { field: "text", direction: "asc" },
@@ -212,35 +222,72 @@
         maxOptions: false
     });
 
+    // Event listener for category change
     document.getElementById('select-category').addEventListener('change', function () {
         const selectedOption = this.options[this.selectedIndex];
         const availableTickets = selectedOption.getAttribute('data-available-tickets');
+        const categoryName = selectedOption.getAttribute('data-name');
         const sectorImage = selectedOption.getAttribute('data-sector-image');
 
+        console.log("Selected Category Name:", categoryName);
+        console.log("Available Tickets:", availableTickets);
+
+        // Update category image
         const categoryImage = document.getElementById('category-image');
         categoryImage.src = sectorImage || '@Url.Content("~/LogoUrl/Ticket/fullStadium.png")';
 
+        // Clear and populate seat dropdown
         const seatDropdown = document.getElementById('select-seat');
-        seatDropdown.innerHTML = '';
+        seatDropdown.innerHTML = '';  // Reset dropdown
+
+        // Reset the seat select dropdown (clear selection)
+        seatSelect.clear();
 
         if (availableTickets && parseInt(availableTickets) > 0) {
             for (let i = 1; i <= parseInt(availableTickets); i++) {
+                const seatNumber = `${categoryName}-${i}`;
                 const option = document.createElement('option');
-                option.value = `${selectedOption.text}-${i}`;
-                option.textContent = `${selectedOption.text}-${i}`;
+                option.value = seatNumber;
+                option.textContent = seatNumber;
+
+                // Check if the seat is booked
+                if (bookedSeats.includes(seatNumber)) {
+                    option.disabled = true; // Mark as disabled
+                }
+
                 seatDropdown.appendChild(option);
             }
         } else {
             const option = document.createElement('option');
             option.value = '';
-            option.textContent = 'Select a seat...';
+            option.textContent = 'No seats available';
             seatDropdown.appendChild(option);
         }
 
+        // Refresh Tom Select dropdown
         seatSelect.clearOptions();
-        Array.from(seatDropdown.options).forEach(opt => {
-            seatSelect.addOption({ value: opt.value, text: opt.textContent });
+        Array.from(seatDropdown.options).forEach((opt) => {
+            seatSelect.addOption({
+                value: opt.value,
+                text: opt.textContent,
+                disabled: opt.disabled
+            });
         });
         seatSelect.refreshOptions();
+    });
+
+    // Trigger category change event on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('select-category').dispatchEvent(new Event('change'));
+    });
+
+    // Event listener for seat change to focus on the submit button
+    document.getElementById('select-seat').addEventListener('change', function () {
+        const submitButton = document.querySelector('.btn-ticket'); // Select the submit button
+
+        // Focus on the submit button when a seat is selected
+        if (this.value) {
+            submitButton.focus();
+        }
     });
 </script>
