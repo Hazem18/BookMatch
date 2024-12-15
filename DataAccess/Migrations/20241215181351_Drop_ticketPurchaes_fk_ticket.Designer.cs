@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241215181351_Drop_ticketPurchaes_fk_ticket")]
+    partial class Drop_ticketPurchaes_fk_ticket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4fd45c99-23c5-4887-973c-7ee1e535bfbe",
+                            Id = "55341746-c8b4-49df-b8f1-325bf206737e",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "c9609ced-67c0-433a-b050-fd70c82830c0",
+                            Id = "ba7b96a9-ab12-4955-ae52-1c68cc055a78",
                             Name = "User",
                             NormalizedName = "User"
                         });
@@ -527,11 +530,16 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TicketId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TicketId");
 
                     b.HasIndex("UserId");
 
@@ -697,6 +705,10 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Models.TicketPurchase", b =>
                 {
+                    b.HasOne("Models.Ticket", null)
+                        .WithMany("TicketPurchases")
+                        .HasForeignKey("TicketId");
+
                     b.HasOne("Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -758,6 +770,8 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Models.Ticket", b =>
                 {
+                    b.Navigation("TicketPurchases");
+
                     b.Navigation("UserTickets");
                 });
 

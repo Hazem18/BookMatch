@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241215162937_Edit_oldMatch_model")]
+    partial class Edit_oldMatch_model
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4fd45c99-23c5-4887-973c-7ee1e535bfbe",
+                            Id = "66d501f3-f364-43fc-8352-db062ceb9e88",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "c9609ced-67c0-433a-b050-fd70c82830c0",
+                            Id = "9482cd81-566a-4de9-a0eb-3366189bce0d",
                             Name = "User",
                             NormalizedName = "User"
                         });
@@ -337,6 +340,9 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("MatchDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MatchId")
+                        .HasColumnType("int");
+
                     b.Property<string>("StadiumName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -494,9 +500,6 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("DateMatch")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MatchId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -527,11 +530,16 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TicketId");
 
                     b.HasIndex("UserId");
 
@@ -697,11 +705,19 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Models.TicketPurchase", b =>
                 {
+                    b.HasOne("Models.Ticket", "Ticket")
+                        .WithMany("TicketPurchases")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Ticket");
 
                     b.Navigation("User");
                 });
@@ -758,6 +774,8 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Models.Ticket", b =>
                 {
+                    b.Navigation("TicketPurchases");
+
                     b.Navigation("UserTickets");
                 });
 

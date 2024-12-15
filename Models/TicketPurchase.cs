@@ -14,9 +14,10 @@ namespace Models
         public string ApplicationName {  get; set; }
         public ApplicationUser User { get; set; }  
 
-        public int TicketId { get; set; }  
-        public Ticket Ticket { get; set; } 
+      //  public int TicketId { get; set; }  
+      //  public Ticket Ticket { get; set; } 
 
+        public int MatchId { get; set; }
         public string SeatNumber { get; set; }  
 
         public decimal Price { get; set; }  

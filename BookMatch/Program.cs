@@ -44,6 +44,7 @@ namespace BookMatch
             builder.Services.AddScoped(typeof(IUserTicketRepository), typeof(UserTicketRepository));
             builder.Services.AddScoped(typeof(ITeamLeagueRepository), typeof(TeamLeagueRepository));
             builder.Services.AddScoped(typeof(ITicketPurchaseRepository), typeof(TicketPurchaseRepository));
+            builder.Services.AddScoped(typeof(IOldMatchRepository), typeof(OldMatchRepository));
 
             builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
             StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];

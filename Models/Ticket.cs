@@ -16,7 +16,7 @@ namespace Models
         public string? SeatNumber { get; set; }  // Unique for each match
 
         public ICollection<UserTicket> UserTickets { get; set; } = new List<UserTicket>();
-        public ICollection<TicketPurchase> TicketPurchases { get; set; } = new List<TicketPurchase>();
+      //  public ICollection<TicketPurchase> TicketPurchases { get; set; } = new List<TicketPurchase>();
 
     }
 }

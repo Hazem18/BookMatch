@@ -21,6 +21,7 @@ namespace DataAccess
         public DbSet<TeamLeague> TeamLeagues { get; set; }
         public DbSet<UserTicket> userTickets { get; set; }
         public DbSet<TicketPurchase> ticketPurchases { get; set; }
+        public DbSet<OldMatch> oldMatches { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

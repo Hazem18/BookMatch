@@ -32,13 +32,13 @@ namespace BookMatch.Areas.User.Controllers
 
             if (User.IsInRole("Admin"))
             {
-                tickets = ticketPurchaseRepository.Get(includeProps: [t=>t.Ticket.Match, t=>t.Ticket.TicketPurchases]).ToList();
+                tickets = ticketPurchaseRepository.Get().ToList();
             }
             else
             {
                 tickets = ticketPurchaseRepository.Get(
-                    expression: t => t.UserId == currentUser.Id,
-                    includeProps: [t=>t.Ticket.Match,  t=>t.Ticket.TicketPurchases]
+                    expression: t => t.UserId == currentUser.Id
+                    
                 ).ToList();
             }
 

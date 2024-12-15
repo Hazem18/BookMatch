@@ -163,7 +163,8 @@ namespace BookMatch.Areas.User.Controllers
                 {
                     UserId = appUser,
                     ApplicationName = cartItem.User?.UserName,
-                    TicketId = cartItem.Ticket.Id,
+                   // TicketId = cartItem.Ticket.Id,
+                    MatchId = match.Id,
                     SeatNumber = cartItem.Ticket.SeatNumber,
                     Price = cartItem.Ticket.TicketCategory.Price,
                     PurchaseDate = DateTime.Now,
