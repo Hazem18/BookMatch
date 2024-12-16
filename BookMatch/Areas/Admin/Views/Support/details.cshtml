@@ -1,0 +1,32 @@
+﻿@model Models.SupportTicket
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card">
+    <div class="card-header">
+        <h5> Email : @Model.User.Email <br /> Name : @Model.User.FirstName @Model.User.LastName</h5>
+        <h6>@Model.CreatedAt</h6>
+    </div>
+
+    <div class="card-body">
+        <h5 class="card-title">@Model.Title</h5>
+        <p class="card-text" id="text">@Model.Description </p>
+        <div class="col-1">
+          @{  if (Model.IsResolved == false)
+            {
+
+                <a asp-action="solved" asp-route-id="@Model.Id" class="btn btn-primary">unsolved</a>
+            }
+            else
+            {
+                <button type="button" disabled class="btn btn-success">solved</button>
+            }
+
+        }
+    </div>
+    </div>
+</div>

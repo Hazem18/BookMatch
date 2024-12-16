@@ -51,7 +51,7 @@ namespace BookMatch.Areas.User.Controllers
            e => e.Stadium,
            e => e.Tickets,
            e => e.TeamA,
-           e => e.TeamB],expression:e=>e.DateTime.Day<DateTime.Now.Day);
+           e => e.TeamB],expression:e=>e.DateTime<DateTime.Now);
 
             foreach(var item in oldMatches)
             {
@@ -161,7 +161,7 @@ namespace BookMatch.Areas.User.Controllers
 
                     //check if booking this match is expired
                     var expriredMatch = matchRepository.GetOne(expression: e => e.Id == id, tracked: false);
-                    if(expriredMatch.DateTime.Day <= DateTime.Now.AddDays(1).Day)
+                    if(expriredMatch.DateTime <= DateTime.Now.AddDays(1))
                     {
                         TempData["bought"] = "booking this match is expired";
                         var ticketcategories = ticketCategoryRepository.Get();
