@@ -1,0 +1,55 @@
+﻿@model List<Models.SupportTicket>
+
+@{
+    ViewData["Title"] = "All Support Tickets";
+}
+<h1 class="text-center text-success"> All Support Tickets</h1>
+<div class="container">
+
+    @foreach (var item in Model)
+    {
+  
+            <div class="card">
+            <div class="card-header">
+                <h5> Email : @item.User.Email <br /> Name : @item.User.FirstName @item.User.LastName</h5>
+                <h6>@item.CreatedAt</h6>
+            </div>
+           @{
+                if(item.IsViewed==false)
+                {
+             <h6><span class="badge text-bg-secondary">New</span></h6>     
+                }
+            } 
+             
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text" id="text">@item.Description </p>
+                    <div class="row">
+                        <div class="col-2">
+                    <a asp-action="details" asp-route-id="@item.Id" class="btn btn-primary">see details</a>
+                            </div>   
+                            <div class="col-1">
+                        @{
+                            if(item.IsResolved==false)
+                            {
+                                
+                                <a asp-action="solved" asp-route-id="@item.Id" class="btn btn-primary">unsolved</a>
+                            }
+                            else
+                            {
+                                <button type="button" disabled class="btn btn-success">solved</button>
+                            }
+
+                                }
+                            </div>
+                </div>
+                </div>
+            </div>
+    }
+
+</div>
+<script>
+    const longString = "This is a very long string that needs to be truncated after 50 characters.";
+    const truncatedString = longString.length > 50 ? longString.substring(0, 50) + "..." : longString;
+    document.getElementById("text").innerText = truncatedString;
+</script>

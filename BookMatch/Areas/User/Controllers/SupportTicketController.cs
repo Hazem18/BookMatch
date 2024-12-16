@@ -51,7 +51,9 @@ namespace BookMatch.Areas.User.Controllers
                     Description = supportTicketVM.Description,
                     CreatedAt = DateTime.Now,
                     IsResolved = false,
-                    UserId = userId
+                    UserId = userId,
+                    IsViewed = false
+                    
                 };
                 supportTicketRepository.Create(supporticket);
                 supportTicketRepository.Commit();

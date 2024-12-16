@@ -13,6 +13,7 @@ namespace Models
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public bool IsResolved { get; set; } = false;
+        public bool IsViewed { get; set; } = false;
 
         public string UserId { get; set; }
         public ApplicationUser User { get; set; } = null!;
