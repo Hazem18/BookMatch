@@ -136,18 +136,18 @@ namespace BookMatch.Areas.Admin.Controllers
             return View(ticketVM);
         }
 
-        private string? UploadImg(IFormFile Imag)
+        private string? UploadImg(IFormFile SectorImage)
         {
-            if (Imag.Length > 0)
+            if (SectorImage.Length > 0)
             {
-                var fileName = Imag.FileName;
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(SectorImage.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\LogoUrl\\Ticket", fileName);
 
                 using (var stream = System.IO.File.Create(filePath))
                 {
-                    Imag.CopyTo(stream);
+                    SectorImage.CopyTo(stream);
                 }
-                return Imag.FileName;
+                return SectorImage.FileName;
             }
             return null;
         }

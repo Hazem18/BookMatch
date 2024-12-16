@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 
 namespace Models.ViewModels
 {
@@ -17,8 +19,8 @@ namespace Models.ViewModels
         [Required(ErrorMessage = "The AvailableTickets Field Is Required")]
         [Range(1, 1000000)]
         public int AvailableTickets { get; set; }
-        // [ValidateNever]
-        [Required(ErrorMessage = "The SectorImage Field Is Required")]
+         [ValidateNever]
+        //[Required(ErrorMessage = "The SectorImage Field Is Required")]
         public string? SectorImage { get; set; }
         [Required(ErrorMessage = "The Price Field Is Required")]
         [Range(1, 10000)]

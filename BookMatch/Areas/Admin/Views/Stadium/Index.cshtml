@@ -6,7 +6,20 @@
 
 <h1 class="text-center text-success">Stadiums</h1>
 
-<a asp-action="Create" class="btn btn-football add-btn">Add New Stadium</a>
+<div class="row mb-3">
+    <div class="col-12 text-end">
+        <a asp-action="Create" class="btn btn-football add-btn">
+            <i class="bi bi-plus-circle"></i> Add New Stadium
+        </a>
+    </div>
+</div>
+
+<form action="/Admin/Stadium/Search" method="get" class="d-flex justify-content-end align-items-center mb-4">
+    <input class="form-control search-input me-2" type="search" name="searchTerm" placeholder="Search for Stadium..." required />
+    <button class="btn btn-football btn-search bi bi-search" type="submit">
+        Search
+    </button>
+</form>
 
 <table class="table table-bordered table-football">
     <thead>
@@ -16,7 +29,7 @@
             <th>Capacity</th>
             <th>Location</th>
             <th>Description</th>
-            <th>Actions</th>
+            <th style="width: 20%;">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -38,8 +51,8 @@
                     <td><a href="@stadium.LocationUrl" target="_blank">View Location</a></td>
                     <td>@stadium.Description</td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@stadium.Id" class="btn btn-football btn-sm">Edit</a>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-stadium-id="@stadium.Id">Delete</button>
+                        <a asp-action="Edit" asp-route-id="@stadium.Id" class="btn btn-football btn-sm"><i class="bi bi-pencil-square"></i> Edit</a>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-stadium-id="@stadium.Id"><i class="bi bi-trash"></i> Delete</button>
                     </td>
                 </tr>
                 index++;
@@ -174,3 +187,6 @@
             box-shadow: 0 6px 20px rgba(0, 100, 0, 0.5);
         }
 </style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+

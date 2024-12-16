@@ -130,21 +130,23 @@ namespace BookMatch.Areas.Admin.Controllers
             return View(leagueVM);
         }
 
-        private string? UploadImg(IFormFile logo)
+        private string? UploadImg(IFormFile LogoUrl)
         {
-            if (logo.Length > 0)
+            if (LogoUrl.Length > 0)
             {
-                var fileName = logo.FileName;
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(LogoUrl.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\LogoUrl", fileName);
 
                 using (var stream = System.IO.File.Create(filePath))
                 {
-                    logo.CopyTo(stream);
+                    LogoUrl.CopyTo(stream);
                 }
-                return logo.FileName;
+                return LogoUrl.FileName;
             }
             return null;
         }
+
+        
         public IActionResult Delete(int leagueId)
         {
             var league = leagueRepository.GetOne(expression: e=>e.Id== leagueId);

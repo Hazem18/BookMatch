@@ -104,5 +104,12 @@ namespace BookMatch.Areas.Admin.Controllers
             return RedirectToAction("Notfound", "Home", new { area = "User" });
         }
 
+        public IActionResult Search(string searchTerm)
+        {
+            var stadium = stadiumRepository.Get(expression: m => m.Name.Contains(searchTerm));
+
+            return View("Index", stadium);
+        }
+
     }
 }
