@@ -1,0 +1,146 @@
+﻿@model IEnumerable<OldMatch>
+
+@{
+    ViewData["Title"] = "Matches Table";
+}
+
+<h1 class="text-center text-success">Matches</h1>
+
+
+<table class="table table-bordered table-football">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Team Home</th>
+            <th>Team away</th>
+            <th>stadium</th>
+            <th>league</th>
+            <th>sold tickets</th>
+            <th>total sales</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+
+        {
+
+            int index = 1;
+
+
+
+            foreach (var item in Model)
+
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@item.MatchDate.ToString()</td>
+                    <td>@item.TeamHomeName</td>
+                    <td>@item.TeamAwayName</td>
+                    <td>@item.StadiumName</td>
+                    <td>@item.LeagueName</td>
+                    <td>@item.Users</td>
+                    <td>@item.TolalSales</td>
+                </tr>
+                index++;
+
+            }
+
+        }
+
+        else
+
+        {
+            <tr>
+                <td colspan="6" class="text-center text-muted">No stadiums available.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+<style>
+    .table-football {
+        background-color: #f3fff3;
+        border: 1px solid #28a745;
+        box-shadow: 0 4px 20px rgba(40, 167, 69, 0.2);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .table-football th {
+            background: linear-gradient(45deg, #28a745, #218838);
+            color: white;
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 12px;
+            border: none;
+        }
+
+        .table-football td {
+            padding: 10px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #e0e0e0;
+        }
+
+        .table-football tr:nth-child(even) {
+            background-color: #eaffea;
+        }
+
+        .table-football tr:hover {
+            background-color: #d4f8d4;
+            transition: background-color 0.3s ease;
+        }
+
+    .btn-football {
+        color: white;
+        background: linear-gradient(45deg, #28a745, #218838);
+        border: none;
+        border-radius: 5px;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .btn-football:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+        }
+
+    .btn-danger {
+        color: white;
+        background: linear-gradient(45deg, #dc3545, #c82333);
+        border: none;
+        border-radius: 5px;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(220, 53, 69, 0.4);
+        }
+
+    .add-btn {
+        float: right;
+        margin-bottom: 15px;
+        color: white;
+        background: linear-gradient(45deg, #006400, #228B22);
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .add-btn:hover {
+            background: linear-gradient(45deg, #228B22, #006400);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 100, 0, 0.5);
+        }
+</style>

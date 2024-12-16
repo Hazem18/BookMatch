@@ -25,7 +25,7 @@ else
                         <div class="ticket-card">
                             <div class="ticket-header">
                                 <h2 class="text-success">@ticket.TicketCategoryName</h2>
-                                <p><strong class="text-success">Match Date:</strong> @ticket.Ticket?.Match?.DateTime.ToString("yyyy-MM-dd HH:mm")</p>
+                                <p><strong class="text-success">Match Date:</strong> @ticket.DateMatch.ToString("yyyy-MM-dd HH:mm")</p>
                             </div>
                             <div class="ticket-body">
                                 <p><strong class="text-success">Seat Number:</strong> @ticket.SeatNumber</p>

@@ -21,7 +21,8 @@ namespace DataAccess
         public DbSet<TeamLeague> TeamLeagues { get; set; }
         public DbSet<UserTicket> userTickets { get; set; }
         public DbSet<TicketPurchase> ticketPurchases { get; set; }
-
+        public DbSet<OldMatch> oldMatches { get; set; }
+        public DbSet<SupportTicket> SupportTickets { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -83,6 +84,13 @@ namespace DataAccess
                 .WithMany(t => t.UserTickets)
                 .HasForeignKey(ut => ut.TicketId);
             ///
+
+            modelBuilder.Entity<SupportTicket>()
+                .HasOne(st => st.User)
+                .WithMany(u => u.SupportTickets)
+                .HasForeignKey(st => st.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

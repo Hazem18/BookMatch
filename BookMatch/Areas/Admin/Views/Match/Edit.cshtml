@@ -12,8 +12,10 @@
         <input type="hidden" asp-for="Id" />
 
         <div class="form-group">
-            <label asp-for="DateTime" class="form-label">Date and Time</label>
-            <input asp-for="DateTime" class="form-control" placeholder="Select match date and time" />
+            <label asp-for="DateTime" class="form-label">Date & Time</label>
+            <input asp-for="DateTime" class="form-control" placeholder="Select match date and time"
+                   type="datetime-local"
+                   min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
             <span asp-validation-for="DateTime" class="text-danger"></span>
         </div>
 
@@ -154,3 +156,22 @@
             transform: translateY(-2px);
         }
 </style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dateInput = document.querySelector('input[name="DateTime"]');
+
+        // Set the min attribute dynamically
+        const now = new Date();
+        const formattedNow = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
+        dateInput.min = formattedNow;
+
+        // Prevent user from entering a past date manually
+        dateInput.addEventListener('change', function () {
+            const selectedDate = new Date(dateInput.value);
+            if (selectedDate < now) {
+                // Clear the input if invalid
+                dateInput.value = "";
+            }
+        });
+    });
+</script>

@@ -250,3 +250,38 @@
         color: #ff0000; /* Red for unavailable */
     }
 </style>
+
+@if (TempData["success"] != null)
+{
+    <div id="successToast" class="toast">
+        <strong>@TempData["success"]</strong>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var toast = $("#successToast");
+            if (toast.length > 0) {
+                toast.fadeIn(300).delay(3000).fadeOut(500);
+            }
+        });
+    </script>
+}
+
+<style>
+    .toast {
+        position: fixed;
+        top: 1rem; /* Set to 1rem from the top */
+        left: 50%; /* Position it at the center */
+        transform: translateX(-50%); /* Adjust for perfect centering */
+        z-index: 1050;
+        background-color: #28a745; /* Green background */
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: none; /* Initially hidden */
+    }
+</style>

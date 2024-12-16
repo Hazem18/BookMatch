@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241215181351_Drop_ticketPurchaes_fk_ticket")]
+    partial class Drop_ticketPurchaes_fk_ticket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "33c3c1a6-ed50-46dd-8fb0-221a56f161cc",
+                            Id = "55341746-c8b4-49df-b8f1-325bf206737e",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "d935eaa8-bc72-4c08-91c8-b883208ee48e",
+                            Id = "ba7b96a9-ab12-4955-ae52-1c68cc055a78",
                             Name = "User",
                             NormalizedName = "User"
                         });
@@ -385,39 +388,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Stadiums");
                 });
 
-            modelBuilder.Entity("Models.SupportTicket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsResolved")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SupportTickets");
-                });
-
             modelBuilder.Entity("Models.Team", b =>
                 {
                     b.Property<int>("Id")
@@ -560,11 +530,16 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TicketId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TicketId");
 
                     b.HasIndex("UserId");
 
@@ -679,17 +654,6 @@ namespace DataAccess.Migrations
                     b.Navigation("TeamB");
                 });
 
-            modelBuilder.Entity("Models.SupportTicket", b =>
-                {
-                    b.HasOne("Models.ApplicationUser", "User")
-                        .WithMany("SupportTickets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Models.Team", b =>
                 {
                     b.HasOne("Models.Stadium", "Stadium")
@@ -741,6 +705,10 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Models.TicketPurchase", b =>
                 {
+                    b.HasOne("Models.Ticket", null)
+                        .WithMany("TicketPurchases")
+                        .HasForeignKey("TicketId");
+
                     b.HasOne("Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -771,8 +739,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Models.ApplicationUser", b =>
                 {
-                    b.Navigation("SupportTickets");
-
                     b.Navigation("UserTickets");
                 });
 
@@ -804,6 +770,8 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Models.Ticket", b =>
                 {
+                    b.Navigation("TicketPurchases");
+
                     b.Navigation("UserTickets");
                 });
 
