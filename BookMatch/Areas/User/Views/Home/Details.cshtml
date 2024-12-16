@@ -7,19 +7,19 @@
 
 @if (TempData["NotAllowed"] != null)
 {
-    <div class="alert-box alert-danger">
-        <h1>@TempData["NotAllowed"]</h1>
+    <div id="NotAllowedtoast" class="toastred">
+        <strong>@TempData["NotAllowed"]</strong>
     </div>
 }
 @if (TempData["success"] != null)
 {
-    <div class="alert-box alert-success">
-        <h1>@TempData["success"]</h1>
+    <div id="successToast" class="toast">
+        <strong>@TempData["success"]</strong>
     </div>
 }
 @if (TempData["bought"] != null)
 {
-    <div class="alert-box alert-info">
+    <div id="boughtToast" class="toastorange">
         <h1>@TempData["bought"]</h1>
     </div>
 }
@@ -291,3 +291,65 @@
         }
     });
 </script>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Select all toast elements correctly
+            var toasts = $("#successToast, #NotAllowedtoast, #boughtToast");
+
+            // Iterate over each toast element
+            toasts.each(function(index, toast) {
+                $(toast).fadeIn(300).delay(3000 + (index * 1000)).fadeOut(500);  // Stagger the fadeOut slightly
+            });
+        });
+    </script>
+}
+
+
+
+<style>
+    .toast {
+        position: fixed;
+        top: 1rem; /* Set to 1rem from the top */
+        left: 50%; /* Position it at the center */
+        transform: translateX(-50%); /* Adjust for perfect centering */
+        z-index: 1050;
+        background-color: #28a745; /* Green background */
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: none; /* Initially hidden */
+    }
+
+    .toastred {
+        position: fixed;
+        top: 1rem; /* Set to 1rem from the top */
+        left: 50%; /* Position it at the center */
+        transform: translateX(-50%); /* Adjust for perfect centering */
+        z-index: 1050;
+        background-color: red; /* red background */
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: none; /* Initially hidden */
+    }
+
+    .toastorange {
+        position: fixed;
+        top: 1rem; /* Set to 1rem from the top */
+        left: 50%; /* Position it at the center */
+        transform: translateX(-50%); /* Adjust for perfect centering */
+        z-index: 1050;
+        background-color: orange; /* orange background */
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: none; /* Initially hidden */
+    }
+
+</style>

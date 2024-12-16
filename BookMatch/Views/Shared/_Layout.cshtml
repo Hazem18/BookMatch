@@ -32,6 +32,8 @@
             margin-top: auto;
         }
     </style> *@
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -53,6 +55,9 @@
                         {
                             <li>
                                 <a class="nav-link text-white" asp-area="user" asp-controller="cart" asp-action="Index"><i class="bi bi-cart"></i> </a>
+                            </li>
+                            <li>
+                                <a class="nav-link text-white" asp-area="user" asp-controller="SupportTicket" asp-action="create">Contact Support</a>
                             </li>
                         }
                         @if (User.IsInRole(SD.AdminRole))
@@ -102,7 +107,7 @@
     
     <!-- JavaScript محلي -->
     <script src="~/js/site.js" asp-append-version="true"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

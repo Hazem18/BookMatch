@@ -16,5 +16,7 @@ namespace Models
         public string? ProfilePicture {  get; set; }
         public ICollection<UserTicket> UserTickets { get; set; } = new List<UserTicket>();
 
+        public ICollection<SupportTicket> SupportTickets { get; set; } = new List<SupportTicket>();
+
     }
 }

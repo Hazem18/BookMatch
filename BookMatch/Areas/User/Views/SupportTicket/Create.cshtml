@@ -1,0 +1,94 @@
+﻿@model Models.ViewModels.SupportTicketVM
+
+@{
+    ViewData["Title"] = "Create Support Ticket";
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header">
+            Create Support Ticket
+        </div>
+        <div class="card-body">
+            <form asp-area="User" asp-controller="SupportTicket" asp-action="Create" method="post" class="mt-4">
+                <div class="form-group">
+                    <label asp-for="Title" class="form-label">Issue Type</label>
+                    <select asp-for="Title" class="form-control">
+                        <option value="">Select an Issue</option>
+                        <option value="Payment Issues">Payment Issues</option>
+                        <option value="Account Management Issues">Account Management Issues</option>
+                        <option value="Platform Failure">Platform Failure</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="4" placeholder="Describe your issue in detail"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary w-100">Submit Ticket</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    body {
+        background-color: #f3f7fa;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 128, 0, 0.3);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #1e7e34, #28a745);
+        color: white;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-align: center;
+        padding: 1rem 0;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #ffc107, #ffeb3b);
+        color: black;
+        font-weight: bold;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ffeb3b, #ffc107);
+            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.5);
+            transform: translateY(-2px);
+        }
+
+    .form-control {
+        border: 1px solid #28a745;
+        border-radius: 8px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #1e7e34;
+    }
+
+    .text-danger {
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+    }
+
+</style>
+
