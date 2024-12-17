@@ -30,33 +30,56 @@
     <div class="details-card">
         <h4>Match Information</h4>
         <hr />
-        <dl class="row">
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DateTime)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.DateTime)</dd>
+        <div class="">
+            <div class="row">
+            <div class="col-sm-2">@Html.DisplayNameFor(model => model.DateTime) : </div>
+            <div class="col-sm-4">@Html.DisplayFor(model => model.DateTime)</div>
+            </div>
+            <!-- Team vs Team Section -->
+           
 
-            <dt class="col-sm-3">Stadium</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Stadium.Name)</dd>
+                <div class="teams row">
+                    <div class="team col-4">
+                        <img src="~/Images/Teams/@Model.TeamA.LogoUrl" alt="@Model.TeamA.Name logo" class="team-logo">
+                       
+                    </div>
+                    <div class="vs-text col-1">VS</div>
+                    <div class="team col-4">
+                        <img src="~/Images/Teams/@Model.TeamB.LogoUrl" alt="@Model.TeamB.Name logo" class="team-logo">
+                  
+                    </div>
+                </div>
+            <div class="row ">
+                <div class="col-8">Team Home : @Model.TeamA.Name</div>
+                <div class=" col-3 ">Team Away : @Model.TeamB.Name</div>
 
-            <dt class="col-sm-3">Team Home</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.TeamA.Name)</dd>
+                </div>
+          
+            <div class="row" >
 
-            <dt class="col-sm-3">Team Away</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.TeamB.Name)</dd>
+            <div class="col-sm-2">Stadium : </div>
+            <div class="col-sm-3">@Html.DisplayFor(model => model.Stadium.Name)</div>
+                <div class="col-sm-3"> 
+                    <a target="_blank" href="@Model.Stadium.LocationUrl" class="button-link"><i class="bi bi-geo-alt-fill"></i></a>
+                </div>
+            </div>
 
-            <dt class="col-sm-3">League</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.League.Name)</dd>
-        </dl>
+            <div class="row">
+            <div class="col-sm-2">Leagu : </div>
+            <div class="col-sm-4">@Html.DisplayFor(model => model.League.Name)</div>
+            </div>
+        </div>
     </div>
 
     <form asp-action="Details" method="post" class="match-form">
         <input type="hidden" asp-for="Id" />
 
         <div class="form-section">
-            <div class="image-section">
+            <div class="image-section col-9">
                 <img id="category-image" src="@Url.Content("~/LogoUrl/Ticket/fullStadium.png")" alt="Stadium View" class="stadium-image" />
             </div>
-
             <div class="dropdown-section">
+            <div asp-validation-summary="ModelOnly" class="text-danger validation-summary" style="background-color:white"></div>
                 <select id="select-category" name="ticketCategoryId" class="form-control custom-select" tabindex="1">
                     <option value="">Select a category...</option>
                     @foreach (var item in ViewBag.TicketCategories)
@@ -74,11 +97,20 @@
                     <option value="">Select a seat...</option>
                 </select>
 
-                <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
+            
             </div>
         </div>
 
-        <button type="submit" class="btn-ticket">Book Match Ticket</button>
+            @{
+                if (Model.DateTime < DateTime.Now.AddDays(1))
+                {
+                    <button disabled class="btn btn-dark ">Book Ticket</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn-ticket">Book Match Ticket</button>
+                }
+            }
     </form>
 
     <div class="back-link">
@@ -111,8 +143,8 @@
     }
 
     .alert-box {
-/*         text-align: center;
- */        padding: 10px;
+        /*         text-align: center;
+     */ padding: 10px;
         margin: 20px auto;
         border-radius: 5px;
         width: fit-content;
@@ -202,6 +234,54 @@
         color: #ccc;
         pointer-events: none;
     }
+
+
+    /* Team VS Team Section */
+    .teams {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .team {
+        text-align: center;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .team-logo {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-bottom: 5px;
+        border: 2px solid #fff;
+    }
+
+    .vs-text {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 5px 15px;
+        border-radius: 8px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .button-link {
+        text-decoration: none; /* Remove underline */
+        color: white; /* Text color */
+        background-color: #007BFF; /* Button background color */
+        padding: 10px 20px; /* Padding around text */
+        border-radius: 5px; /* Rounded corners */
+        display: inline-block; /* Behave like a button */
+        font-size: 16px;
+    }
+
+        .button-link:hover {
+            background-color: #0056b3; /* Darker background on hover */
+        }
+
 </style>
 
 <script>
@@ -300,7 +380,7 @@
             var toasts = $("#successToast, #NotAllowedtoast, #boughtToast");
 
             // Iterate over each toast element
-            toasts.each(function(index, toast) {
+            toasts.each(function (index, toast) {
                 $(toast).fadeIn(300).delay(3000 + (index * 1000)).fadeOut(500);  // Stagger the fadeOut slightly
             });
         });
