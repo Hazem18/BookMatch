@@ -18,7 +18,7 @@ namespace BookMatch.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var supportTickets = supportTicketRepository.Get(includeProps: [e => e.User])
-                .OrderBy(e=>e.IsViewed).ThenBy(e=>e.CreatedAt).ToList();
+                .OrderBy(e=>e.IsViewed).ThenByDescending(e=>e.CreatedAt).ToList();
             return View(supportTickets);
         }
         public IActionResult details(int id)

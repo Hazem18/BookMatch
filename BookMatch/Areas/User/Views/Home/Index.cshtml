@@ -54,15 +54,35 @@
                         <span>@match.DateTime.ToString("dd MMM yyyy, hh:mm tt")</span>
                     </div>
                     <div class="details-item">
-                        <span class="status @(match.Status == MatchStatus.Available ? "available" : "unavailable")">
-                            @match.Status.ToString()
-                        </span>
+                        @{
+                            if (match.DateTime < DateTime.Now.AddDays(1))
+                            {
+                                <span class="status">
+                                    Unavailable
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="status @(match.Status == MatchStatus.Available ? "available" : "unavailable")">
+                                    @match.Status.ToString()
+                                </span>
+                            }
+                        }
                     </div>
                 </div>
 
                 <!-- Book Ticket -->
                 <div class="text-end mt-2">
-                    <a asp-action="Details" asp-route-id="@match.Id" class="btn-ticket">Book Ticket</a>
+                    @{
+                        if(match.DateTime < DateTime.Now.AddDays(1))
+                        {
+                            <button disabled class="btn btn-dark ">Book Ticket</button>
+                        }
+                        else
+                        {
+                        <a asp-action="Details" asp-route-id="@match.Id" class="btn-ticket">Book Ticket</a>
+                        }
+                    }
                 </div>
             </div>
         }
