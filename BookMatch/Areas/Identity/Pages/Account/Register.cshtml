@@ -30,13 +30,6 @@
                         <label asp-for="Input.LastName">Last Name</label>
                         <span asp-validation-for="Input.LastName" class="text-danger"></span>
                     </div>
-
-                    <!-- Email -->
-                    <div class="form-floating mb-3">
-                        <input asp-for="Input.Email" class="form-control border-success" autocomplete="username" placeholder="name@example.com" />
-                        <label asp-for="Input.Email">Email</label>
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>
                 </div>
 
                 <!-- Second Column -->
@@ -55,6 +48,13 @@
                         <span asp-validation-for="Input.Address" class="text-danger"></span>
                     </div>
                 </div>
+            </div>
+
+            <!-- Email (Full Width) -->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control border-success" autocomplete="username" placeholder="name@example.com" />
+                <label asp-for="Input.Email">Email</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
 
             <!-- Password -->
