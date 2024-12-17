@@ -73,7 +73,29 @@
         </div>
     </div>
 </div>
+<style>
+
+    #enable-authenticator {
+        border: 2px solid #28a745; /* Green border for the 'Set up authenticator app' button */
+    }
+
+    #reset-authenticator {
+        border: 2px solid #28a745; /* Green border for the 'Reset authenticator app' button */
+    }
+
+    /* Hover and focus effects */
+    #enable-authenticator:hover, #enable-authenticator:focus {
+        border-color: #218838; /* Darker green on hover/focus */
+    }
+
+    #reset-authenticator:hover, #reset-authenticator:focus {
+        border-color: #218838; /* Darker green on hover/focus */
+    }
+
+</style>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
