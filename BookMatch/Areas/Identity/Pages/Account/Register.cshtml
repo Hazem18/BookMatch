@@ -4,67 +4,75 @@
     ViewData["Title"] = "Register";
 }
 
-<h1 class="text-center mt-4">@ViewData["Title"]</h1>
-
 <div class="d-flex justify-content-center mt-4">
-    <div class="col-md-6">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="p-4 border rounded shadow-sm bg-light">
-            <h2 class="text-center mb-4">Create Your Account</h2>
+    <div class="col-md-8">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="p-4 border rounded shadow-sm bg-white">
+            <h2 class="text-center mb-4 text-success">⚽ Register For Football Tickets</h2>
             <hr class="mb-4" />
 
+            <!-- Validation Summary -->
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
 
-            <!-- First Name -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.FirstName" class="form-control" maxlength="100" autocomplete="given-name" aria-required="true" placeholder="First Name" />
-                <label asp-for="Input.FirstName">First Name</label>
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
+            <!-- Two-column Layout -->
+            <div class="row">
+                <!-- First Column -->
+                <div class="col-md-6">
+                    <!-- First Name -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.FirstName" class="form-control border-success" maxlength="100" autocomplete="given-name" placeholder="First Name" />
+                        <label asp-for="Input.FirstName">First Name</label>
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
 
-            <!-- Last Name -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.LastName" class="form-control" maxlength="100" autocomplete="family-name" aria-required="true" placeholder="Last Name" />
-                <label asp-for="Input.LastName">Last Name</label>
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
+                    <!-- Last Name -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.LastName" class="form-control border-success" maxlength="100" autocomplete="family-name" placeholder="Last Name" />
+                        <label asp-for="Input.LastName">Last Name</label>
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
 
-            <!-- Email -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
+                    <!-- Email -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control border-success" autocomplete="username" placeholder="name@example.com" />
+                        <label asp-for="Input.Email">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                </div>
 
-            <!-- National ID -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.NationalId" class="form-control" maxlength="20" autocomplete="off" aria-required="true" placeholder="National ID" />
-                <label asp-for="Input.NationalId">National ID</label>
-                <span asp-validation-for="Input.NationalId" class="text-danger"></span>
-            </div>
+                <!-- Second Column -->
+                <div class="col-md-6">
+                    <!-- National ID -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.NationalId" class="form-control border-success" maxlength="20" autocomplete="off" placeholder="National ID" />
+                        <label asp-for="Input.NationalId">National ID</label>
+                        <span asp-validation-for="Input.NationalId" class="text-danger"></span>
+                    </div>
 
-            <!-- Address -->
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Address" class="form-control" maxlength="200" autocomplete="off" aria-required="true" placeholder="Address" />
-                <label asp-for="Input.Address">Address</label>
-                <span asp-validation-for="Input.Address" class="text-danger"></span>
+                    <!-- Address -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Address" class="form-control border-success" maxlength="200" autocomplete="off" placeholder="Address" />
+                        <label asp-for="Input.Address">Address</label>
+                        <span asp-validation-for="Input.Address" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
 
             <!-- Password -->
             <div class="form-floating mb-3">
-                <input asp-for="Input.Password" type="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Password" />
+                <input asp-for="Input.Password" type="password" class="form-control border-success" autocomplete="new-password" placeholder="Password" />
                 <label asp-for="Input.Password">Password</label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
 
             <!-- Confirm Password -->
             <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" type="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" />
+                <input asp-for="Input.ConfirmPassword" type="password" class="form-control border-success" autocomplete="new-password" placeholder="Confirm Password" />
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
             <!-- Submit Button -->
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-primary btn-lg">Register</button>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-success btn-lg">Sign up</button>
         </form>
     </div>
 </div>

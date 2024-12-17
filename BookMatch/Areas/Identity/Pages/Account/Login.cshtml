@@ -5,50 +5,51 @@
     ViewData["Title"] = "Log in";
 }
 
-@* <h1 class="text-center mt-4">@ViewData["Title"]</h1> *@
-
 <div class="d-flex justify-content-center mt-4">
     <div class="col-md-6">
-        <form id="account" method="post" class="p-4 border rounded shadow-sm bg-light">
-            <h2 class="text-center mb-4">Sign In</h2>
+        <form id="account" method="post" class="p-4 border rounded shadow-sm bg-white">
+            <h2 class="text-center mb-4 text-success">⚽ Football Tickets Login</h2>
             <hr class="mb-4" />
 
+            <!-- Validation Summary -->
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
 
             <!-- Email -->
             <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <input asp-for="Input.Email" class="form-control border-success" autocomplete="username" placeholder="name@example.com" />
                 <label asp-for="Input.Email">Email</label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
 
             <!-- Password -->
             <div class="form-floating mb-3">
-                <input asp-for="Input.Password" type="password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                <input asp-for="Input.Password" type="password" class="form-control border-success" autocomplete="current-password" placeholder="password" />
                 <label asp-for="Input.Password">Password</label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
 
             <!-- Remember Me -->
             <div class="form-check mb-3">
-                <input class="form-check-input" asp-for="Input.RememberMe" />
-                <label class="form-check-label" asp-for="Input.RememberMe">
+                <input class="form-check-input border-success" asp-for="Input.RememberMe" />
+                <label class="form-check-label text-success" asp-for="Input.RememberMe">
                     Remember Me
                 </label>
             </div>
 
             <!-- Submit Button -->
-            <button id="login-submit" type="submit" class="w-100 btn btn-primary btn-lg">Log in</button>
+            <button id="login-submit" type="submit" class="w-100 btn btn-success btn-lg">
+                Sign in
+            </button>
 
             <!-- Links -->
             <div class="text-center mt-3">
-                <a id="forgot-password" asp-page="./ForgotPassword" class="text-decoration-none">Forgot your password?</a>
+                <a id="forgot-password" asp-page="./ForgotPassword" class="text-success text-decoration-none">Forgot your password?</a>
             </div>
             <div class="text-center mt-2">
-                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none">Register as a new user</a>
+                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-success text-decoration-none">Register as a new user</a>
             </div>
             <div class="text-center mt-2">
-                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-decoration-none">Resend email confirmation</a>
+                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-success text-decoration-none">Resend email confirmation</a>
             </div>
         </form>
     </div>
