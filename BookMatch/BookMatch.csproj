@@ -30,8 +30,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Images\Teams\" />
-    <Folder Include="wwwroot\LogoUrl\Ticket\" />
-    <Folder Include="wwwroot\LogoUrl\Ticket\" />
   </ItemGroup>
 
 </Project>

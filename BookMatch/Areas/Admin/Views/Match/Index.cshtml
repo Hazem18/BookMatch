@@ -7,7 +7,7 @@
 
 <h1 class="text-center text-success">Matches</h1>
 
-<a asp-action="Create" class="btn btn-football add-btn">Add New Match</a>
+<a asp-action="Create" class="btn btn-football add-btn"> <i class="bi bi-plus-circle"></i> Add New Match</a>
 
 <table class="table table-bordered table-football">
     <thead>
@@ -37,8 +37,8 @@
                     <td>@match.League.Name</td>
                     <td>@match.Status</td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@match.Id" class="btn btn-football btn-sm">Edit</a>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-match-id="@match.Id">Delete</button>
+                        <a asp-action="Edit" asp-route-id="@match.Id" class="btn btn-football btn-sm"><i class="bi bi-pencil-square"></i> Edit</a>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-match-id="@match.Id"><i class="bi bi-trash"></i> Delete</button>
                     </td>
                 </tr>
                 index++;
@@ -137,6 +137,7 @@
         input.value = matchId;
     });
 </script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 <style>
     /* Copy the Stadiums page CSS styles here */

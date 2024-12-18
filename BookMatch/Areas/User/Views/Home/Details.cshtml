@@ -76,7 +76,7 @@
 
         <div class="form-section">
             <div class="image-section col-9">
-                <img id="category-image" src="@Url.Content("~/LogoUrl/Ticket/fullStadium.png")" alt="Stadium View" class="stadium-image" />
+                <img id="category-image" src="@Url.Content("~/LogoUrl/Stadium/full.jpg")" alt="Stadium View" class="stadium-image" />
             </div>
             <div class="dropdown-section">
             <div asp-validation-summary="ModelOnly" class="text-danger validation-summary" style="background-color:white"></div>
@@ -314,7 +314,7 @@
 
         // Update category image
         const categoryImage = document.getElementById('category-image');
-        categoryImage.src = sectorImage || '@Url.Content("~/LogoUrl/Ticket/fullStadium.png")';
+        categoryImage.src = sectorImage || '@Url.Content("~/LogoUrl/Stadium/full.jpg")';
 
         // Clear and populate seat dropdown
         const seatDropdown = document.getElementById('select-seat');
