@@ -45,15 +45,13 @@ namespace BookMatch.Areas.User.Controllers
 
         public IActionResult Index(DateOnly? date = null)
         {
-
-
             var oldMatches = matchRepository.Get
            (includeProps:
            [e => e.League,
-          e => e.Stadium,
-          e => e.Tickets,
-          e => e.TeamA,
-          e => e.TeamB], expression: e => e.DateTime < DateTime.Now);
+           e => e.Stadium,
+           e => e.Tickets,
+           e => e.TeamA,
+           e => e.TeamB], expression: e => e.DateTime < DateTime.Now);
 
             foreach (var item in oldMatches)
             {
@@ -77,8 +75,6 @@ namespace BookMatch.Areas.User.Controllers
                 matchRepository.Commit();
 
             }
-
-
             if (date.HasValue)
             {
                 DateOnly checkdate = date.Value;
@@ -111,6 +107,24 @@ namespace BookMatch.Areas.User.Controllers
                 ViewBag.Leagues = leagueRepository.Get();
                 return View(matches);
             }
+
+        }
+
+        public IActionResult LeagueMatches(int LeagueId)
+        {
+            var matches = matchRepository.Get
+           (includeProps:
+           [e => e.League,
+           e => e.Stadium,
+           e => e.Tickets,
+           e => e.TeamA,
+           e => e.TeamB], expression: e => e.LeagueId == LeagueId).OrderBy(e => e.DateTime);
+            // Retrieve the league name and set it in ViewData for the page title
+            var leagueName = leagueRepository.
+            GetOne(expression: e => e.Id == LeagueId)?.Name;
+            ViewData["LeagueName"] = leagueName;
+            ViewBag.Leagues = leagueRepository.Get();
+            return View(matches);
         }
         public IActionResult Details(int id)
         {
