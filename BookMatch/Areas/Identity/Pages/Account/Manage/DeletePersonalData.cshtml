@@ -5,29 +5,69 @@
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<h3>@ViewData["Title"]</h3>
+<h3 class="text-danger text-center mb-4">@ViewData["Title"]</h3>
 
-<div class="alert alert-warning" role="alert">
-    <p>
-        <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
-    </p>
+<div class="d-flex justify-content-center">
+    <div class="alert alert-warning text-center" role="alert" style="max-width: 400px;">
+        <p class="fw-bold">
+            Deleting this data will permanently remove your account, and this cannot be recovered.
+        </p>
+    </div>
 </div>
 
-<div>
-    <form id="delete-user" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-        @if (Model.RequirePassword)
-        {
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Please enter your password." />
-                <label asp-for="Input.Password" class="form-label"></label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
+
+<div class="d-flex justify-content-center">
+    <div class="col-md-6">
+        <form id="delete-user" method="post" class="p-4 border rounded shadow-sm bg-white">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+            @if (Model.RequirePassword)
+            {
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Password" class="form-control border-success" autocomplete="current-password" aria-required="true" placeholder="Please enter your password." />
+                    <label asp-for="Input.Password" class="form-label">Enter Password</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+            }
+
+            <button class="w-100 btn btn-lg btn-success border-success" type="submit">Delete data and close my account</button>
+        </form>
+    </div>
+</div>
+<style>
+    /* General button styling for success actions */
+    .btn-success {
+        border: 2px solid #28a745; /* Green border */
+        transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+
+        .btn-success:hover, .btn-success:focus {
+            border-color: #218838; /* Darker green on hover/focus */
+            background-color: #218838; /* Match the background for hover */
+            color: #fff; /* Ensure text remains readable */
         }
-        <button class="w-100 btn btn-lg btn-danger" type="submit">Delete data and close my account</button>
-    </form>
-</div>
 
+    /* Styling for danger actions */
+    .btn-danger {
+        border: 2px solid #218838; /* Red border */
+        transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+
+        .btn-danger:hover, .btn-danger:focus {
+            border-color: #218838; /* Darker red on hover/focus */
+            background-color: #218838; /* Match the background for hover */
+            color: #fff; /* Ensure text remains readable */
+        }
+
+    /* Ensure consistent padding and rounded corners for all buttons */
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px; /* Smooth rounded corners */
+        font-size: 1rem; /* Readable text size */
+        font-weight: bold; /* Emphasize button text */
+    }
+
+</style>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

@@ -50,14 +50,14 @@
                     </div>
                 </div>
             <div class="row ">
-                <div class="col-8">Team Home : @Model.TeamA.Name</div>
-                <div class=" col-3 ">Team Away : @Model.TeamB.Name</div>
+                <div class="col-8">Team Home: @Model.TeamA.Name</div>
+                <div class=" col-3 ">Team Away: @Model.TeamB.Name</div>
 
                 </div>
           
             <div class="row" >
 
-            <div class="col-sm-2">Stadium : </div>
+            <div class="col-sm-2">Stadium: </div>
             <div class="col-sm-3">@Html.DisplayFor(model => model.Stadium.Name)</div>
                 <div class="col-sm-3"> 
                     <a target="_blank" href="@Model.Stadium.LocationUrl" class="button-link"><i class="bi bi-geo-alt-fill"></i></a>
@@ -65,7 +65,7 @@
             </div>
 
             <div class="row">
-            <div class="col-sm-2">Leagu : </div>
+            <div class="col-sm-2">League: </div>
             <div class="col-sm-4">@Html.DisplayFor(model => model.League.Name)</div>
             </div>
         </div>

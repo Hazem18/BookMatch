@@ -4,8 +4,17 @@
     ViewData["Title"] = "Football Matches";
 }
 
+
+
 <div class="container">
     <h1 class="text-center mb-4" style="color: #1e7e34; font-weight: bold;">Football Fixtures</h1>
+    <form asp-action="index" class="mb-4">
+        <div class="search-container">
+            <label for="date" class=" me-2">Enter Data</label>
+            <input id="date" name="date" type="date" class="form-control d-inline-block" style="width: auto; display: inline-block;" />
+            <button type="submit" class="btn btn-custom ms-2">Search</button>
+        </div>
+    </form>
 
     <!-- League Buttons -->
     <div class="league-buttons-container">
@@ -74,13 +83,13 @@
                 <!-- Book Ticket -->
                 <div class="text-end mt-2">
                     @{
-                        if(match.DateTime < DateTime.Now.AddDays(1))
+                        if (match.DateTime < DateTime.Now.AddDays(1))
                         {
                             <button disabled class="btn btn-dark ">Book Ticket</button>
                         }
                         else
                         {
-                        <a asp-action="Details" asp-route-id="@match.Id" class="btn-ticket">Book Ticket</a>
+                            <a asp-action="Details" asp-route-id="@match.Id" class="btn-ticket">Book Ticket</a>
                         }
                     }
                 </div>
@@ -95,6 +104,42 @@
         font-family: 'Arial', sans-serif;
     }
 
+    /* Search Container (Input + Button inside the same box) */
+    .search-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+        .search-container label {
+            margin-right: 10px;
+        }
+
+        .search-container input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .search-container button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+            .search-container button:hover {
+                background-color: #218838;
+            }
+
     /* League Buttons Container */
     .league-buttons-container {
         display: flex;
@@ -106,8 +151,8 @@
 
     /* League Button */
     .league-button {
-        width: 60px;  /* Same size as on the League Matches page */
-        height: 60px;  /* Same size */
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         border: 3px solid #fff;
         display: flex;
@@ -118,15 +163,15 @@
         transition: transform 0.3s ease;
     }
 
-    .league-button:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 12px rgba(0, 128, 0, 0.5);
-    }
+        .league-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 128, 0, 0.5);
+        }
 
-    .league-button img {
-        max-width: 100%;
-        border-radius: 50%;
-    }
+        .league-button img {
+            max-width: 100%;
+            border-radius: 50%;
+        }
 
     /* Matches Container */
     .matches-container {
@@ -147,10 +192,10 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .match-card:hover {
-        transform: scale(1.02);
-        box-shadow: 0 6px 20px rgba(0, 128, 0, 0.5);
-    }
+        .match-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 128, 0, 0.5);
+        }
 
     /* League Section */
     .league {
@@ -219,22 +264,22 @@
         gap: 5px;
     }
 
-    /* Updated Icons */
-    .details-item i {
-        font-size: 1rem;
-        width: 20px;
-        text-align: center;
-    }
+        /* Updated Icons */
+        .details-item i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
 
-    .details-item i.stadium-icon {
-        background: url('/Icons/stadium.png') no-repeat center center;
-        background-size: contain;
-    }
+            .details-item i.stadium-icon {
+                background: url('/Icons/stadium.png') no-repeat center center;
+                background-size: contain;
+            }
 
-    .details-item i.date-icon {
-        background: url('/Icons/calendar.png') no-repeat center center;
-        background-size: contain;
-    }
+            .details-item i.date-icon {
+                background: url('/Icons/calendar.png') no-repeat center center;
+                background-size: contain;
+            }
 
     /* Book ticket button */
     .btn-ticket {
@@ -250,11 +295,11 @@
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
-    .btn-ticket:hover {
-        background: #ffd454;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(255, 193, 7, 0.4);
-    }
+        .btn-ticket:hover {
+            background: #ffd454;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 193, 7, 0.4);
+        }
 
     /* Match status */
     .status {
@@ -262,13 +307,37 @@
         font-size: 0.85rem;
     }
 
-    .status.available {
-        color: #00ff00; /* Green for available */
+        .status.available {
+            color: #00ff00; /* Green for available */
+        }
+
+        .status.unavailable {
+            color: #ff0000; /* Red for unavailable */
+        }
+
+    /* Custom button style for submit */
+    .btn-custom {
+        background-color: #28a745; /* Green background */
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-size: 1rem;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 128, 0, 0.2); /* Add shadow for better visibility */
     }
 
-    .status.unavailable {
-        color: #ff0000; /* Red for unavailable */
-    }
+        .btn-custom:hover {
+            background-color: #218838; /* Darker green on hover */
+            transform: translateY(-3px); /* Button lift effect */
+            box-shadow: 0 6px 15px rgba(0, 128, 0, 0.3);
+        }
+
+        .btn-custom:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 128, 0, 0.7); /* Green focus outline */
+        }
 </style>
 
 @if (TempData["success"] != null)

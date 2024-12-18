@@ -1,4 +1,7 @@
 ﻿@page
+
+
+
 @model IndexModel
 @{
     ViewData["Title"] = "Profile";
@@ -41,11 +44,9 @@
             </div>
         </div>
 
-        <!-- Right Section: Profile Picture -->
         <div class="col-lg-6 text-center">
             <div class="card border-0 shadow-sm p-4 bg-light-green">
                 <h4 class="text-center mb-3 text-success">Profile Picture</h4>
-
                 <div class="mb-3">
                     @if (Model.Input.ProfilePicture != null)
                     {
@@ -64,7 +65,6 @@
                              style="width: 150px; height: 150px; object-fit: cover;" />
                     }
                 </div>
-
                 <div class="mb-3">
                     <input type="file"
                            accept="image/*"

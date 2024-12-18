@@ -1,0 +1,201 @@
+﻿@model IEnumerable<Models.ApplicationUser>
+
+<div class="container">
+    <h1 class="text-center text-success">Users List</h1>
+
+   @*  <form action="/Admin/user/Search" method="get" class="d-flex justify-content-end align-items-center mb-4">
+        <input class="form-control search-input me-2" type="search" name="searchTerm" placeholder="Search for User..." required />
+        <button class="btn btn-football btn-search bi bi-search" type="submit">
+            Search
+        </button>
+    </form> *@
+    
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+
+
+    <table class="table table-bordered table-football">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>National ID</th>
+                <th>Profile Picture</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                int index = 1;
+                foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@index</td>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>@user.FirstName</td>
+                        <td>@user.LastName</td>
+                        <td>@user.NationalId</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(user.ProfilePicture))
+                            {
+                                <img src="~/Images/ProfilePictures/@user.ProfilePicture" alt="Profile Picture" style="max-width: 50px; max-height: 50px;" />
+                            }
+                            else
+                            {
+                                <img src="~/Images/download (3).jpg" alt="Default Profile Picture" style="max-width: 50px; max-height: 50px;" />
+                            }
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center">
+                                @if (user.IsBlocked)
+                                {
+                                    <a href="@Url.Action("ToggleBlockStatus", "Support", new { userId = user.Id })" class="btn btn-success btn-sm">
+                                        <i class="bi bi-unlock"></i> Unblock
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("ToggleBlockStatus", "Support", new { userId = user.Id })" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-lock"></i> Block
+                                    </a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    index++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" class="text-center text-muted">No users available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).on('click', '.block-btn, .unblock-btn', function () {
+        var userId = $(this).data('user-id'); 
+
+        console.log("User ID: " + userId);
+
+        $.ajax({
+            url: '/Admin/user/ToggleBlockStatus', 
+            type: 'POST',
+            data: { userId: userId },
+            success: function (response) {
+                console.log(response); 
+                if (response.success) {
+                    var button = $('button[data-user-id="' + userId + '"]');
+                    if (response.isBlocked) {
+                        button.removeClass('block-btn btn-danger').addClass('unblock-btn btn-success');
+                        button.html('<i class="bi bi-unlock"></i> Unblock');
+                    } else {
+                        button.removeClass('unblock-btn btn-success').addClass('block-btn btn-danger');
+                        button.html('<i class="bi bi-lock"></i> Block');
+                    }
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log('Error: ' + error); 
+                alert('An error occurred while toggling the block status.');
+            }
+        });
+    });
+</script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<style>
+    .table-football {
+        background-color: #f3fff3;
+        border: 1px solid #28a745;
+        box-shadow: 0 4px 20px rgba(40, 167, 69, 0.2);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .table-football th {
+            background: linear-gradient(45deg, #28a745, #218838);
+            color: white;
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 12px;
+            border: none;
+        }
+
+        .table-football td {
+            padding: 10px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #e0e0e0;
+        }
+
+        .table-football tr:nth-child(even) {
+            background-color: #eaffea;
+        }
+
+        .table-football tr:hover {
+            background-color: #d4f8d4;
+            transition: background-color 0.3s ease;
+        }
+
+    .btn-football {
+        color: white;
+        background: linear-gradient(45deg, #28a745, #218838);
+        border: none;
+        border-radius: 5px;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .btn-football:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+        }
+
+    .btn-danger {
+        color: white;
+        background: linear-gradient(45deg, #dc3545, #c82333);
+        border: none;
+        border-radius: 5px;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(220, 53, 69, 0.4);
+        }
+
+    .btn-success {
+        color: white;
+        background: linear-gradient(45deg, #28a745, #218838);
+        border: none;
+        border-radius: 5px;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+        }
+</style>
