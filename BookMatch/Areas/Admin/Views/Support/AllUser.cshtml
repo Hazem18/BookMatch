@@ -1,24 +1,19 @@
 ﻿@model IEnumerable<Models.ApplicationUser>
 
+@if (TempData["Message"] != null)
+{
+    <div id="MessageTost" class="toast align-items-center text-bg-success border-0 position-fixed top-0 start-50 translate-middle-x mt-3" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 1050;">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>@TempData["Message"]</strong>
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+}
+
 <div class="container">
     <h1 class="text-center text-success">Users List</h1>
-
-   @*  <form action="/Admin/user/Search" method="get" class="d-flex justify-content-end align-items-center mb-4">
-        <input class="form-control search-input me-2" type="search" name="searchTerm" placeholder="Search for User..." required />
-        <button class="btn btn-football btn-search bi bi-search" type="submit">
-            Search
-        </button>
-    </form> *@
-    
-
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["Message"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-
 
 
     <table class="table table-bordered table-football">
@@ -31,7 +26,7 @@
                 <th>Last Name</th>
                 <th>National ID</th>
                 <th>Profile Picture</th>
-                <th>Actions</th>
+                <th style="width:12%;">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -115,6 +110,32 @@
             }
         });
     });
+
+    @section Ads {
+        @if (TempData["Message"] != null)
+        {
+                <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var toastElement = document.getElementById('MessageTost');
+                    var toast = new bootstrap.Toast(toastElement);
+
+                    toast.show();
+
+                    setTimeout(function () {
+                        toastElement.style.opacity = 0;
+
+                        setTimeout(function () {
+                            toast.hide();
+                        }, 1000); 
+                    }, 3000); 
+                });
+        </script>
+        }
+    }
+
+
+
+
 </script>
 
 
@@ -198,4 +219,13 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
         }
+
+    #MessageTost {
+        transition: opacity 1s ease-out; 
+    }
+
+
+
+   
+
 </style>

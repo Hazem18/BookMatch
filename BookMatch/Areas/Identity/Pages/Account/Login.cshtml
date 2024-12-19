@@ -10,7 +10,7 @@
         @if (TempData["ErrorMessage"] != null)
         {
             <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                <div class="toast show align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                <div class="toast show align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="3000" id="ErrorToast">
                     <div class="d-flex">
                         <div class="toast-body">
                             @TempData["ErrorMessage"]
@@ -20,8 +20,6 @@
                 </div>
             </div>
         }
-
-        
 
         <form id="account" method="post" class="p-4 border rounded shadow-sm bg-white">
             <h2 class="text-center mb-4 text-success">⚽ Football Tickets Login</h2>
@@ -69,3 +67,33 @@
         </form>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var toastElement = document.getElementById('ErrorToast');
+        var toast = new bootstrap.Toast(toastElement);
+
+        toast.show();
+
+        setTimeout(function () {
+            toastElement.classList.add('fade');  
+        }, 3000);  
+    });
+</script>
+<style>
+    .toast-container {
+        margin-bottom: 60px; 
+    }
+
+    
+    #ErrorToast {
+        opacity: 1; 
+        transition: opacity 1s ease-out; 
+    }
+
+   
+    .toast.fade {
+        opacity: 0; 
+    }
+
+
+</style>
