@@ -64,6 +64,10 @@ namespace BookMatch.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Phone]
+            [Range(100000000000, 9999999999999999, ErrorMessage = "Phone number must be between 12 and 16 digits.")]
+
+            [RegularExpression(@"^\+?[1-9]\d{1,14}$", ErrorMessage = "Invalid phone number format")]
+
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
@@ -114,19 +118,22 @@ namespace BookMatch.Areas.Identity.Pages.Account.Manage
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            var FirstName=user.FirstName;
-            var LastName=user.LastName;
-            if(Input.FirstName != FirstName)
+            bool isUpdated = false; 
+
+            if (Input.FirstName != user.FirstName)
             {
                 user.FirstName = Input.FirstName;
                 await _userManager.UpdateAsync(user);
+                isUpdated = true;
             }
 
-            if (Input.LastName != LastName)
+            if (Input.LastName != user.LastName)
             {
                 user.LastName = Input.LastName;
                 await _userManager.UpdateAsync(user);
+                isUpdated = true;
             }
+
             if (Input.PhoneNumber != phoneNumber)
             {
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
@@ -135,28 +142,24 @@ namespace BookMatch.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+                isUpdated = true;
             }
-            if(Request.Form.Files.Count > 0)
+
+            if (Request.Form.Files.Count > 0)
             {
                 var file = Request.Form.Files.FirstOrDefault();
+                string extension = Path.GetExtension(file.FileName).ToLower();
 
-                string extension = Path.GetExtension(file.FileName);
-
-                if(extension != ".png" && extension!=".jpg" )
+                if (extension != ".png" && extension != ".jpg" && extension != ".jpeg")
                 {
-
-                ModelState.AddModelError(string.Empty , "profile picture extension must be png or jpg ");
+                    ModelState.AddModelError(string.Empty, "Profile picture extension must be png or jpg or jpeg.");
                     return Page();
                 }
 
-                string random = Guid.NewGuid().ToString();
-                string fileName = random + extension;
-
-
-                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\ProfilePictures", fileName);
+                string fileName = Guid.NewGuid().ToString() + extension;
 
                 string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\ProfilePictures");
-
+                string filePath = Path.Combine(directoryPath, fileName);
 
                 if (!Directory.Exists(directoryPath))
                 {
@@ -167,19 +170,26 @@ namespace BookMatch.Areas.Identity.Pages.Account.Manage
                 {
                     file.CopyTo(stream);
                 }
-                user.ProfilePicture = fileName;
 
-                //using (var dataStream = new MemoryStream())
-                //{
-                //    await files.CopyToAsync(dataStream);
-                //   // user.ProfilePicture = dataStream.ToArray();
-                //}
-                await _userManager.UpdateAsync(user);
+                if (user.ProfilePicture != fileName)
+                {
+                    user.ProfilePicture = fileName;
+                    await _userManager.UpdateAsync(user);
+                    isUpdated = true;
+                }
             }
 
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            if (!isUpdated)
+            {
+                StatusMessage = "No changes were made";
+            }
+            else
+            {
+                StatusMessage = "Your profile has been updated successfully";
+            }
+
             return RedirectToPage();
         }
+
     }
 }
