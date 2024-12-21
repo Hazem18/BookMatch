@@ -77,7 +77,6 @@ namespace BookMatch.Areas.Admin.Controllers
             return RedirectToAction("AllUser", "Support", new { area = "Admin" });
         }
 
-        // Unblock user
         public async Task<IActionResult> Unblock(string id)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -91,7 +90,6 @@ namespace BookMatch.Areas.Admin.Controllers
             return RedirectToAction("AllUser", "Support", new { area = "Admin" });
         }
 
-        // Toggle block/unblock status
         [HttpGet("ToggleBlockStatus")]
         public async Task<IActionResult> ToggleBlockStatus(string userId)
         {

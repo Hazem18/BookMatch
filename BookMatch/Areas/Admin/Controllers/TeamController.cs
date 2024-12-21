@@ -28,8 +28,8 @@ namespace BookMatch.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var teams = teamRepository.GetTeams(
-                    includeStadium: true,   // Include the Stadium property
-                    includeLeagues: true    // Include related Leagues via TeamLeagues
+                    includeStadium: true,  
+                    includeLeagues: true    
                                                 );
             return View(teams);
         }
@@ -87,7 +87,7 @@ namespace BookMatch.Areas.Admin.Controllers
                 Name = team.Name,
                 StadiumId = team.StadiumId,
                 SelectedLeagueIds = team.TeamLeagues.Select(tl => tl.LeagueId).ToList(),
-                LogoUrl = team.LogoUrl // Existing logo URL
+                LogoUrl = team.LogoUrl 
             };
 
             LoadBags();
@@ -113,17 +113,14 @@ namespace BookMatch.Areas.Admin.Controllers
                     return RedirectToAction("Notfound", "Home", new { area = "User" });
                 }
 
-                // Update fields
                 team.Name = teamVM.Name;
                 team.StadiumId = teamVM.StadiumId;
 
-                // Update the logo only if a new one is uploaded
                 if (LogoUrl != null && LogoUrl.Length > 0)
                 {
                     team.LogoUrl = UploadImg(LogoUrl) ?? teamVM.LogoUrl;
                 }
 
-                // Handle leagues
                 var existingLeagueIds = team.TeamLeagues.Select(tl => tl.LeagueId).ToList();
                 var leaguesToAdd = teamVM.SelectedLeagueIds.Except(existingLeagueIds).ToList();
                 var leaguesToRemove = existingLeagueIds.Except(teamVM.SelectedLeagueIds).ToList();
@@ -167,7 +164,6 @@ namespace BookMatch.Areas.Admin.Controllers
             
             team.TeamLeagues.Clear();
 
-            // Delete the team
             teamRepository.Delete(team);
             teamRepository.Commit();
 
@@ -183,7 +179,6 @@ namespace BookMatch.Areas.Admin.Controllers
         
         private string? UploadImg(IFormFile ImgUrl)
         {
-            // save in wwwroot
             if (ImgUrl.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ImgUrl.FileName);
@@ -199,7 +194,6 @@ namespace BookMatch.Areas.Admin.Controllers
         }
         private string UpdateImage(IFormFile ImgUrl, int TeamId)
         {
-            // Check if a new image is uploaded
             if (ImgUrl != null && ImgUrl.Length > 0)
             {
                 return UploadImg(ImgUrl) ?? string.Empty;

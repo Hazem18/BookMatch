@@ -193,7 +193,6 @@ namespace BookMatch.Areas.User.Controllers
                     
 
 
-                    //check if same user book/ bought a ticket of the same match
                     var userId = userManager.GetUserId(User);
                     var bookedTicket = userTicketRepository.GetOne(includeProps: [e => e.Ticket], expression: e => e.UserId == userId && e.Ticket.MatchId == id, tracked: false);
                     var purchasedTicket = ticketPurchaseRepository.GetOne(expression: e => e.UserId == userId &&
@@ -209,7 +208,6 @@ namespace BookMatch.Areas.User.Controllers
                         return View(match);
                     }
 
-                    //chech if someone else bought the same ticket with the same seat number 
 
                     var puchasedSeat = ticketPurchaseRepository.GetOne(expression: e=>e.MatchId == id && e.SeatNumber == seatNumber
                      , tracked: false);
@@ -225,7 +223,6 @@ namespace BookMatch.Areas.User.Controllers
                         return View(match);
                     }
 
-                    //chech if someone else booked the ticket in his cart before 10 mins runs out
 
                     var timedTicket = userTicketRepository.GetOne(expression: e => e.Ticket.MatchId == id && e.Ticket.SeatNumber == seatNumber
                       && e.BookingDate.AddMinutes(10) > DateTime.Now, includeProps: [e => e.Ticket], tracked: false);
